@@ -1,0 +1,46 @@
+# The parent line must be the first non-comment line in the file
+# This line defines the product name and version
+parent	larcoreobj	v1_00_00
+defaultqual	e9
+
+# These optional lines define the installed directories where
+# headers, libraries, and executables will be found
+# Use them only if your product does not conform to the defaults
+# Format: directory_type directory_path directory_name
+# The only recognized values of the first field are fcldir, incdir, libdir, and bindir
+# The only recognized values of the second field are product_dir, fq_dir, and -
+# The third field is not constrained.
+# Defaults:
+# incdir  product_dir  include
+# fcldir  product_dir  fcl
+# libdir  fq_dir       lib
+# bindir  fq_dir       bin
+
+fcldir product_dir job
+gdmldir product_dir
+#
+# we list geant4 explicitly because we are going to set GDML_SCHEMA_DIR 
+# Defining GDML_SCHEMA_DIR here is a temporary hack
+product         version
+canvas		v1_02_00
+gcc		v4_9_3
+
+cetbuildtools	v4_19_04	-	only_for_build
+end_product_list
+
+  
+# e9  - with gcc 4.9.3 and -std=c++14
+qualifier	canvas		gcc	notes
+e9:debug	e9:debug	-nq-
+e9:opt		e9:opt		-nq-
+e9:prof		e9:prof		-nq-
+e9:nu:debug	e9:nu:debug	-nq-
+e9:nu:opt	e9:nu:opt	-nq-
+e9:nu:prof	e9:nu:prof	-nq-
+end_qualifier_list
+
+# Preserve tabs and formatting in emacs and vi / vim:
+
+### Local Variables:
+### tab-width: 8
+### End:
