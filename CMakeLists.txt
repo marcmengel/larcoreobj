@@ -1,8 +1,8 @@
 # ======================================================================
-#  larcore main build file
+#  larcoreobj main build file
 #
 #  cd .../path/to/build/directory
-#  source .../path/to/larcore/ups/setup_for_development <-d|-p>
+#  source .../path/to/larcoreobj/ups/setup_for_development <-d|-p>
 #  cmake [-DCMAKE_INSTALL_PREFIX=/install/path]
 #        -DCMAKE_BUILD_TYPE=$CETPKG_TYPE
 #        $CETPKG_SOURCE
@@ -13,8 +13,8 @@
 # ======================================================================
 
 
-# use cmake 2.8 or later
-cmake_minimum_required (VERSION 2.8)
+# use cmake 3.3 or later
+cmake_minimum_required (VERSION 3.3)
 
 project(larcoreobj)
 
@@ -42,13 +42,13 @@ cet_report_compiler_flags()
 
 # these are minimum required versions, not the actual product versions
 find_ups_product( canvas )
-find_ups_product( messagefacility )
-find_ups_root( root )
+find_ups_product( cetbuildtools )
+find_ups_root( )
 
 # macros for artdaq_dictionary and simple_plugin
 include(ArtDictionary)
-include(ArtMake)
-include(BuildPlugins)
+include(CetMake)
+include(BasicPlugin)
 
 # source
 add_subdirectory(larcoreobj)
