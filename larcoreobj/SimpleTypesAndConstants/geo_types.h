@@ -32,8 +32,8 @@ namespace geo {
   } View_t;
 
   typedef enum _plane_orient {
-    kHorizontal, ///< planes that are in the horizontal plane (depricated as of 8/3/11 bjr)
-    kVertical,   ///< planes that are in the vertical plane (ie ArgoNeuT)
+    kHorizontal, ///< planes that are in the horizontal plane
+    kVertical    ///< planes that are in the vertical plane (ie ArgoNeuT)
   } Orient_t;
 
   typedef enum _plane_sigtype {
@@ -42,11 +42,19 @@ namespace geo {
     kMysteryType  ///< who knows?
   } SigType_t;
 
-
+  
+  /**
+   * @brief Drift direction: positive or negative
+   * 
+   * Do not use this type to distinguish different drift axes: e.g., negative
+   * x drift and negative z drift are both by `kNeg`.
+   */
   typedef enum driftdir {
     kUnknownDrift, ///< drift direction is unknown
-    kPosX,         ///< drift towards positive X values			
-    kNegX 	   ///< drift towards negative X values			
+    kPos,          ///< drift towards positive values
+    kNeg,          ///< drift towards negative values
+    kPosX = kPos,  ///< drift towards positive X values
+    kNegX = kNeg   ///< drift towards negative X values
   } DriftDirection_t;
 
   /// The data type to uniquely identify a cryostat
