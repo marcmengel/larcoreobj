@@ -67,7 +67,7 @@ namespace readout {
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(TPCsetID const& other) const
       {
-        register int cmp_res = CryostatID::cmp(other);
+        int cmp_res = CryostatID::cmp(other);
         if (cmp_res == 0) // same cryostat: compare TPC set
           return ThreeWayComparison(TPCset, other.TPCset);
         else              // return the order of cryostats
@@ -130,7 +130,7 @@ namespace readout {
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(ROPID const& other) const
       {
-        register int cmp_res = TPCsetID::cmp(other);
+        int cmp_res = TPCsetID::cmp(other);
         if (cmp_res == 0) // same TPC set: compare plane
           return ThreeWayComparison(ROP, other.ROP);
         else              // return the order of TPC set
@@ -171,7 +171,7 @@ namespace readout {
   
   /// Order TPCsetID in increasing Cryo, then TPC set
   inline bool operator< (TPCsetID const& a, TPCsetID const& b) {
-    register int cmp_res = a.asCryostatID().cmp(b);
+    int cmp_res = a.asCryostatID().cmp(b);
     if (cmp_res == 0) // same cryostat: compare TPC set
       return a.TPCset < b.TPCset;
     else              // return the order of cryostats
@@ -191,7 +191,7 @@ namespace readout {
   
   /// Order ROPID in increasing Cryo, then TPC set, then ROP
   inline bool operator< (ROPID const& a, ROPID const& b) {
-    register int cmp_res = a.asTPCsetID().cmp(b);
+    int cmp_res = a.asTPCsetID().cmp(b);
     if (cmp_res == 0) // same TPC set: compare ROP
       return a.ROP < b.ROP;
     else              // return the order of TPC set
