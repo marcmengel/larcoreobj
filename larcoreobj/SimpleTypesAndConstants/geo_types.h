@@ -27,6 +27,7 @@ namespace geo {
     kV,       ///< planes which measure V
     kW,       ///< soon to be deprecated, planes which measure W (third view for Bo, MicroBooNE, etc)
     kZ=kW,    ///< planes which measure Z direction (ie wires are vertical)
+    kY,       ///< planes which measure Y direction (ie wires are horizontal)
     k3D,      ///< 3 dimensional objects, potentially hits, clusters, prongs, etc
     kUnknown  ///< unknown view
   } View_t;
