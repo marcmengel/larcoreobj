@@ -23,11 +23,9 @@ namespace sumdata {
     int totspills;
     int goodspills;
 
-#ifndef __GCCXML__
 
     friend std::ostream& operator<< (std::ostream& o, POTSummary const& a);
 
-#endif
 
   };
 
