@@ -23,21 +23,17 @@ namespace sumdata {
   private:
 
     std::string  fDetName; ///< detector name
-#ifndef __GCCXML__
 
   public:
     explicit           RunData(std::string detectorName);
     std::string const& DetName() const;
 
-#endif
 
   };
 }
 
-#ifndef __GCCXML__
 
 inline std::string const& sumdata::RunData::DetName() const { return fDetName; }
 
-#endif
 
 #endif // SD_RUNDATA_H
