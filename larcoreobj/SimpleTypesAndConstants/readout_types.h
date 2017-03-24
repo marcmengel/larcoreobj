@@ -58,11 +58,9 @@ namespace readout {
 
     // comparison operators are out of class
 
-#ifndef __GCCXML__
     /// Human-readable representation of the TPC set ID
     explicit operator std::string() const
       { return readout::details::writeToString(*this); }
-#endif // __GCCXML__
     
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(TPCsetID const& other) const
@@ -121,11 +119,9 @@ namespace readout {
 
     // comparison operators are out of class
     
-#ifndef __GCCXML__
     /// Human-readable representation of the ROP ID
     explicit operator std::string() const
       { return details::writeToString(*this); }
-#endif // __GCCXML__
     
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(ROPID const& other) const
