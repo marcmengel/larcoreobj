@@ -114,7 +114,54 @@ void test_MiddlePointAccumulator_sequenceConstructor() {
 } // test_MiddlePointAccumulator_sequenceConstructor()
 
 
-void test_MiddlePointAccumulator_documentation() {
+void test_MiddlePointAccumulator_documentation_class() {
+  
+  geo::Point_t expected { 0.0, 1.0, 0.0 };
+  /*
+   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
+   * std::array<geo::Point_t, 4> const points = {
+   *   geo::Point_t{ 0.0,  1.0,  2.0 },
+   *   geo::Point_t{ 0.0, -1.0,  2.0 },
+   *   geo::Point_t{ 0.0,  1.0, -2.0 },
+   *   geo::Point_t{ 0.0, -1.0, -2.0 }
+   * };
+   * 
+   * geo::MiddlePointAccumulator pointsAboveGround;
+   * for (auto const& point: points)
+   *   if (point.Y() > 0.0) pointsAboveGround.add(point);
+   * 
+   * if (pointsAboveGround.empty())
+   *   throw std::runtime_error("No point above ground!");
+   * 
+   * auto middleAboveGround = pointsAboveGround.middlePoint();
+   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   */
+  std::array<geo::Point_t, 4> const points = {
+    geo::Point_t{ 0.0,  1.0,  2.0 },
+    geo::Point_t{ 0.0, -1.0,  2.0 },
+    geo::Point_t{ 0.0,  1.0, -2.0 },
+    geo::Point_t{ 0.0, -1.0, -2.0 }
+  };
+  
+  geo::MiddlePointAccumulator pointsAboveGround;
+  for (auto const& point: points)
+    if (point.Y() > 0.0) pointsAboveGround.add(point);
+  
+  if (pointsAboveGround.empty())
+    throw std::runtime_error("No point above ground!");
+  
+  auto middleAboveGround = pointsAboveGround.middlePoint();
+  
+  
+  static_assert(std::is_same<decltype(middleAboveGround), geo::Point_t>::value,
+    "unexpected return type for geo::MiddlePointAccumulator::middlePoint()");
+  CheckPoint
+    (middleAboveGround, expected, "MiddlePointAccumulator::middlePoint()");
+  
+} // test_MiddlePointAccumulator_documentation_middlePointAs()
+
+
+void test_MiddlePointAccumulator_documentation_middlePointAs() {
   
   //
   // middlePointAs()
@@ -130,6 +177,14 @@ void test_MiddlePointAccumulator_documentation() {
   auto mp = accumulator.middlePointAs<TVector3>();
   
   CheckPoint(mp, geo::Point_t(), "MiddlePointAccumulator::middlePointAs()");
+  
+} // test_MiddlePointAccumulator_documentation_middlePointAs()
+
+
+void test_MiddlePointAccumulator_documentation() {
+  
+  test_MiddlePointAccumulator_documentation_class();
+  test_MiddlePointAccumulator_documentation_middlePointAs();
   
 } // test_MiddlePointAccumulator_documentation()
 

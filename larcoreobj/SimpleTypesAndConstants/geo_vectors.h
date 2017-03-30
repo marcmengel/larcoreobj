@@ -97,6 +97,28 @@ namespace geo {
    * This class accumulates cartesian points and returns their middle point when
    * asked.
    * 
+   * In the following example, only the points from a list (`points`) which
+   * have _y_ coordinate larger than 0 are averaged, all with the same weight:
+   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
+   * std::array<geo::Point_t, 4> const points = {
+   *   geo::Point_t{ 0.0,  1.0,  2.0 },
+   *   geo::Point_t{ 0.0, -1.0,  2.0 },
+   *   geo::Point_t{ 0.0,  1.0, -2.0 },
+   *   geo::Point_t{ 0.0, -1.0, -2.0 }
+   * };
+   * 
+   * geo::MiddlePointAccumulator pointsAboveGround;
+   * for (auto const& point: points)
+   *   if (point.Y() > 0.0) pointsAboveGround.add(point);
+   * 
+   * if (pointsAboveGround.empty())
+   *   throw std::runtime_error("No point above ground!");
+   * 
+   * auto middleAboveGround = pointsAboveGround.middlePoint();
+   * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   * Note the check to make sure that there are points that fulfil the
+   * requirement.
+   * 
    */
   class MiddlePointAccumulator {
     std::array<Length_t, 3U> fSums; ///< Sum of each of the point components.
