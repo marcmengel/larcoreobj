@@ -1,3 +1,12 @@
+/**
+ * @file   geo_types.h
+ * @brief  Definition of data types for geometry description.
+ * @author Brian Rebel (brebel@fnal.gov)
+ * 
+ * This library is currently header-only and depends only on standard C++.
+ * 
+ */
+
 #ifndef LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_TYPES_H
 #define LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_TYPES_H
 
@@ -15,32 +24,35 @@ namespace geo {
   } // namespace details
   
   
+  /// @{
+  /// @name Geometry enumerators
+  
   typedef enum coordinates {
-    kXCoord, ///< X coordinate
-    kYCoord, ///< Y coordinate
-    kZCoord  ///< Z coordinate
+    kXCoord, ///< X coordinate.
+    kYCoord, ///< Y coordinate.
+    kZCoord  ///< Z coordinate.
   } Coord_t;
 
   /// Enumerate the possible plane projections
   typedef enum _plane_proj {
-    kU,       ///< planes which measure U
-    kV,       ///< planes which measure V
-    kW,       ///< soon to be deprecated, planes which measure W (third view for Bo, MicroBooNE, etc)
-    kZ=kW,    ///< planes which measure Z direction (ie wires are vertical)
-    kY,       ///< planes which measure Y direction (ie wires are horizontal)
-    k3D,      ///< 3 dimensional objects, potentially hits, clusters, prongs, etc
-    kUnknown  ///< unknown view
+    kU,       ///< Planes which measure U.
+    kV,       ///< Planes which measure V.
+    kW,       ///< Planes which measure W (third view for Bo, MicroBooNE, etc).
+    kZ=kW,    ///< Planes which measure Z direction.
+    kY,       ///< Planes which measure Y direction.
+    k3D,      ///< 3-dimensional objects, potentially hits, clusters, prongs, etc.
+    kUnknown  ///< Unknown view.
   } View_t;
 
   typedef enum _plane_orient {
-    kHorizontal, ///< planes that are in the horizontal plane
-    kVertical    ///< planes that are in the vertical plane (ie ArgoNeuT)
+    kHorizontal, ///< Planes that are in the horizontal plane.
+    kVertical    ///< Planes that are in the vertical plane (e.g. ArgoNeuT).
   } Orient_t;
 
   typedef enum _plane_sigtype {
-    kInduction,   ///< signal from induction planes
-    kCollection,  ///< signal from collection planes
-    kMysteryType  ///< who knows?
+    kInduction,   ///< Signal from induction planes.
+    kCollection,  ///< Signal from collection planes.
+    kMysteryType  ///< Who knows?
   } SigType_t;
 
   
@@ -51,13 +63,20 @@ namespace geo {
    * x drift and negative z drift are both by `kNeg`.
    */
   typedef enum driftdir {
-    kUnknownDrift, ///< drift direction is unknown
-    kPos,          ///< drift towards positive values
-    kNeg,          ///< drift towards negative values
-    kPosX = kPos,  ///< drift towards positive X values
-    kNegX = kNeg   ///< drift towards negative X values
+    kUnknownDrift, ///< Drift direction is unknown.
+    kPos,          ///< Drift towards positive values.
+    kNeg,          ///< Drift towards negative values.
+    kPosX = kPos,  ///< Drift towards positive X values.
+    kNegX = kNeg   ///< Drift towards negative X values.
   } DriftDirection_t;
-
+  
+  // Geometry enumerators
+  /// @}
+  
+  
+  /// @{
+  /// @name Geometry element IDs
+  
   /// The data type to uniquely identify a cryostat.
   struct CryostatID {
     typedef unsigned int CryostatID_t; ///< Type for the ID number.
@@ -237,19 +256,44 @@ namespace geo {
         
   }; // struct WireID
   
+  
+  //----------------------------------------------------------------------------
+  //--- ID output operators
+  //---
+  /// Generic output of CryostatID to stream
+  template <typename Stream>
+  inline Stream& operator<< (Stream& out, CryostatID const& cid) {
+    out << "C:" << cid.Cryostat;
+    return out;
+  } // operator<< (Stream, CryostatID)
 
-  struct WireIDIntersection{
-    double y;                  ///< y position of intersection
-    double z;                  ///< z position of intersection
-    unsigned int TPC;          ///< TPC of intersection
 
-    // In APAs, we want this to increase in the direction wireID 
-    // index increases in: moving inward vertically towards y=0
-    bool operator<( const WireIDIntersection& otherIntersect ) const {
-      return std::abs( y ) > std::abs( otherIntersect.y );
-    }
-  };
+  /// Generic output of TPCID to stream
+  template <typename Stream>
+  inline Stream& operator<< (Stream& out, TPCID const& tid) {
+    out << ((CryostatID const&) tid) << " T:" << tid.TPC;
+    return out;
+  } // operator<< (Stream, TPCID)
 
+
+  /// Generic output of PlaneID to stream
+  template <typename Stream>
+  inline Stream& operator<< (Stream& out, PlaneID const& pid) {
+    out << ((TPCID const&) pid) << " P:" << pid.Plane;
+    return out;
+  } // operator<< (Stream, PlaneID)
+
+
+  /// Generic output of WireID to stream
+  template <typename Stream>
+  inline Stream& operator<< (Stream& out, WireID const& wid) {
+    out << ((PlaneID const&) wid) << " W:" << wid.Wire;
+    return out;
+  } // operator<< (Stream, WireID)
+  
+  /// @}
+  // Geometry element IDs
+  
   //----------------------------------------------------------------------------
   //--- ID comparison operators
   //---
@@ -342,43 +386,24 @@ namespace geo {
       return cmp_res < 0;
   } // operator< (WireID, WireID)
   
-  ///@}
+  /// @}
+  
   
   //----------------------------------------------------------------------------
-  //--- ID output operators
-  //---
-  /// Generic output of CryostatID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, CryostatID const& cid) {
-    out << "C:" << cid.Cryostat;
-    return out;
-  } // operator<< (Stream, CryostatID)
+  struct WireIDIntersection{
+    double y;                  ///< y position of intersection
+    double z;                  ///< z position of intersection
+    unsigned int TPC;          ///< TPC of intersection
 
-
-  /// Generic output of TPCID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, TPCID const& tid) {
-    out << ((CryostatID const&) tid) << " T:" << tid.TPC;
-    return out;
-  } // operator<< (Stream, TPCID)
-
-
-  /// Generic output of PlaneID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, PlaneID const& pid) {
-    out << ((TPCID const&) pid) << " P:" << pid.Plane;
-    return out;
-  } // operator<< (Stream, PlaneID)
-
-
-  /// Generic output of WireID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, WireID const& wid) {
-    out << ((PlaneID const&) wid) << " W:" << wid.Wire;
-    return out;
-  } // operator<< (Stream, WireID)
+    // In APAs, we want this to increase in the direction wireID 
+    // index increases in: moving inward vertically towards y=0
+    bool operator<( const WireIDIntersection& otherIntersect ) const {
+      return std::abs( y ) > std::abs( otherIntersect.y );
+    }
+  };
   
   
+  //----------------------------------------------------------------------------
   namespace details {
     
     template <typename T>
