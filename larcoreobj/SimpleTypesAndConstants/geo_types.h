@@ -40,6 +40,7 @@ namespace geo {
     kW,       ///< Planes which measure W (third view for Bo, MicroBooNE, etc).
     kZ=kW,    ///< Planes which measure Z direction.
     kY,       ///< Planes which measure Y direction.
+    kX,       ///< Planes which measure X direction.
     k3D,      ///< 3-dimensional objects, potentially hits, clusters, prongs, etc.
     kUnknown  ///< Unknown view.
   } View_t;
