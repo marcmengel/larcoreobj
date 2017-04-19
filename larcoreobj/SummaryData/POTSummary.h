@@ -3,7 +3,6 @@
 /// 
 /// Definition of object to store pot related information
 /// 
-/// \version $Id: RunData.h,v 1.1.1.1 2011/03/03 00:19:49 brebel Exp $
 /// \author  brebel@fnal.gov
 ////////////////////////////////////////////////////////////////////////
 #ifndef POTSUM_H
