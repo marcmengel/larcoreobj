@@ -27,6 +27,14 @@
 
 // LArSoft libraries
 #include "larcoreobj/SimpleTypesAndConstants/geo_types.h"
+
+// C/C++ standard libraries
+#include <type_traits> // add_const<>
+
+//------------------------------------------------------------------------------
+template <typename T>
+auto makeConst(T& var) -> decltype(auto) { return const_cast<T const&>(var); }
+
 //------------------------------------------------------------------------------
 // compile-time tests:
 //
@@ -131,6 +139,9 @@ void test_CryostatID_defaultConstructor() {
   BOOST_CHECK_EQUAL(cid.Cryostat, 1);
 */
   
+  BOOST_CHECK_EQUAL(&cid.deepestIndex(), &cid.Cryostat);
+  BOOST_CHECK_EQUAL(&makeConst(cid).deepestIndex(), &cid.Cryostat);
+  
 } // test_CryostatID_defaultConstructor()
 
 
@@ -174,6 +185,9 @@ void test_TPCID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(tid, false);
+  
+  BOOST_CHECK_EQUAL(&tid.deepestIndex(), &tid.TPC);
+  BOOST_CHECK_EQUAL(&makeConst(tid).deepestIndex(), &tid.TPC);
   
 } // test_TPCID_defaultConstructor()
 
@@ -265,6 +279,9 @@ void test_PlaneID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(pid, false);
+  
+  BOOST_CHECK_EQUAL(&pid.deepestIndex(), &pid.Plane);
+  BOOST_CHECK_EQUAL(&makeConst(pid).deepestIndex(), &pid.Plane);
   
 } // test_PlaneID_defaultConstructor()
 
@@ -375,6 +392,9 @@ void test_WireID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(wid, false);
+  
+  BOOST_CHECK_EQUAL(&wid.deepestIndex(), &wid.Wire);
+  BOOST_CHECK_EQUAL(&makeConst(wid).deepestIndex(), &wid.Wire);
   
 } // test_WireID_defaultConstructor()
 

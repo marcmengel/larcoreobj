@@ -112,9 +112,15 @@ namespace geo {
     explicit operator std::string() const
       { return details::writeToString(*this); }
     
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (cryostat's).
+    auto const& deepestIndex() const { return Cryostat; }
+    /// Returns the deepest ID available (cryostat's).
+    auto& deepestIndex() { return Cryostat; }
+    
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(CryostatID const& other) const
-      { return ThreeWayComparison(Cryostat, other.Cryostat); }
+      { return ThreeWayComparison(deepestIndex(), other.deepestIndex()); }
     
     /// Return the value of the invalid ID as a r-value
     static CryostatID_t getInvalidID() { return CryostatID::InvalidID; }
@@ -153,12 +159,18 @@ namespace geo {
     explicit operator std::string() const
       { return details::writeToString(*this); }
     
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (TPC's).
+    auto const& deepestIndex() const { return TPC; }
+    /// Returns the deepest ID available (TPC's).
+    auto& deepestIndex() { return TPC; }
+    
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(TPCID const& other) const
       {
         int cmp_res = CryostatID::cmp(other);
         if (cmp_res == 0) // same cryostat: compare TPC
-          return ThreeWayComparison(TPC, other.TPC);
+          return ThreeWayComparison(deepestIndex(), other.deepestIndex());
         else              // return the order of cryostats
           return cmp_res;
       } // cmp()
@@ -195,13 +207,19 @@ namespace geo {
     explicit operator std::string() const
       { return details::writeToString(*this); }
     
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (plane's).
+    auto const& deepestIndex() const { return Plane; }
+    /// Returns the deepest ID available (plane's).
+    auto& deepestIndex() { return Plane; }
+    
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(PlaneID const& other) const
       {
         int cmp_res = TPCID::cmp(other);
         if (cmp_res == 0) // same TPC: compare plane
-          return ThreeWayComparison(Plane, other.Plane);
-        else              // return the order of TPC
+          return ThreeWayComparison(deepestIndex(), other.deepestIndex());
+        else              // return the order of planes
           return cmp_res;
       } // cmp()
     
@@ -237,16 +255,21 @@ namespace geo {
     explicit operator std::string() const
       { return details::writeToString(*this); }
     
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (wire's).
+    auto const& deepestIndex() const { return Wire; }
+    /// Returns the deepest ID available (wire's).
+    auto& deepestIndex() { return Wire; }
+    
     /// Returns < 0 if this is smaller than tpcid, 0 if equal, > 0 if larger
     int cmp(WireID const& other) const
       {
         int cmp_res = PlaneID::cmp(other);
-        if (cmp_res == 0) // same plane: compare wire
-          return ThreeWayComparison(Wire, other.Wire);
-        else              // return the order of planes
+        if (cmp_res == 0) // same plane: compare wires
+          return ThreeWayComparison(deepestIndex(), other.deepestIndex());
+        else              // return the order of wire
           return cmp_res;
       } // cmp()
-    
     
     /// Backward compatibility; use the wire directly or a explicit cast instead
     /// @todo Remove the instances of geo::WireID::planeID() in the code
