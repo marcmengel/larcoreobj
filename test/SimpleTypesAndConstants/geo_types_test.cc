@@ -70,6 +70,23 @@ void TestIDvalidity(geo::CryostatID const& id, bool answer) {
   BOOST_CHECK_EQUAL((bool)id, answer);
 } // TestIDvalidity()
 
+void TestSetIDvalidity(geo::CryostatID& id) {
+  
+  bool const orig = bool(id);
+  
+  id.setValidity(true);
+  BOOST_CHECK(bool(id));
+  id.setValidity(false);
+  BOOST_CHECK(!id);
+  id.markValid();
+  BOOST_CHECK(bool(id));
+  id.markInvalid();
+  BOOST_CHECK(!id);
+  id.setValidity(orig);
+  BOOST_CHECK_EQUAL(bool(id), orig);
+  
+} // TestSetIDvalidity()
+
 /// Test comparison operators
 template <typename TESTID, typename REFID = TESTID>
 void TestCompareSmallerID(TESTID const& id, REFID  const& smaller) {
@@ -132,6 +149,7 @@ void test_CryostatID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(cid, false);
+  TestSetIDvalidity(cid);
   
 /* // feature not added
   // test assignment from ID_t
@@ -153,6 +171,7 @@ void test_CryostatID_directConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(cid, true);
+  TestSetIDvalidity(cid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(cid.Cryostat, geo::CryostatID::CryostatID_t(1));
@@ -169,6 +188,7 @@ void test_CryostatID_directConstructor() {
   
   geo::CryostatID first_cid(0);
   TestIDvalidity(cid, true);
+  TestSetIDvalidity(cid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(first_cid.Cryostat, geo::CryostatID::CryostatID_t(0));
@@ -185,6 +205,7 @@ void test_TPCID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(tid, false);
+  TestSetIDvalidity(tid);
   
   BOOST_CHECK_EQUAL(&tid.deepestIndex(), &tid.TPC);
   BOOST_CHECK_EQUAL(&makeConst(tid).deepestIndex(), &tid.TPC);
@@ -221,6 +242,7 @@ void test_TPCID_nestedConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(tid, true);
+  TestSetIDvalidity(tid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(tid.Cryostat, geo::CryostatID::CryostatID_t( 1));
@@ -245,6 +267,7 @@ void test_TPCID_directConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(tid, true);
+  TestSetIDvalidity(tid);
   
   BOOST_TEST_CHECKPOINT("Testing comparison with same cryostat ID");
   
@@ -261,6 +284,7 @@ void test_TPCID_directConstructor() {
   
   geo::TPCID first_tid(0, 0);
   TestIDvalidity(first_tid, true);
+  TestSetIDvalidity(first_tid);
   
   // - check the ID value
   BOOST_CHECK_EQUAL(first_tid.Cryostat, geo::CryostatID::CryostatID_t(0));
@@ -279,6 +303,7 @@ void test_PlaneID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(pid, false);
+  TestSetIDvalidity(pid);
   
   BOOST_CHECK_EQUAL(&pid.deepestIndex(), &pid.Plane);
   BOOST_CHECK_EQUAL(&makeConst(pid).deepestIndex(), &pid.Plane);
@@ -315,6 +340,7 @@ void test_PlaneID_nestedConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(pid, true);
+  TestSetIDvalidity(pid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(pid.Cryostat, geo::CryostatID::CryostatID_t( 1));
@@ -339,6 +365,7 @@ void test_PlaneID_directConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(pid, true);
+  TestSetIDvalidity(pid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(pid.Cryostat, geo::CryostatID::CryostatID_t( 1));
@@ -374,6 +401,7 @@ void test_PlaneID_directConstructor() {
   
   geo::PlaneID first_pid(0, 0, 0);
   TestIDvalidity(first_pid, true);
+  TestSetIDvalidity(first_pid);
   
   // - check the ID value
   BOOST_CHECK_EQUAL(first_pid.Cryostat, geo::CryostatID::CryostatID_t(0));
@@ -392,6 +420,7 @@ void test_WireID_defaultConstructor() {
   
   // a default-constructed ID is invalid:
   TestIDvalidity(wid, false);
+  TestSetIDvalidity(wid);
   
   BOOST_CHECK_EQUAL(&wid.deepestIndex(), &wid.Wire);
   BOOST_CHECK_EQUAL(&makeConst(wid).deepestIndex(), &wid.Wire);
@@ -427,6 +456,7 @@ void test_WireID_nestedConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(wid, true);
+  TestSetIDvalidity(wid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(wid.Cryostat, geo::CryostatID::CryostatID_t( 1));
@@ -453,6 +483,7 @@ void test_WireID_directConstructor() {
   
   // an explicitly constructed ID is valid:
   TestIDvalidity(wid, true);
+  TestSetIDvalidity(wid);
   
   // check the ID value
   BOOST_CHECK_EQUAL(wid.Cryostat, geo::CryostatID::CryostatID_t( 1));
@@ -499,6 +530,7 @@ void test_WireID_directConstructor() {
   
   geo::WireID first_wid(0, 0, 0, 0);
   TestIDvalidity(first_wid, true);
+  TestSetIDvalidity(first_wid);
   
   // - check the ID value
   BOOST_CHECK_EQUAL(first_wid.Cryostat, geo::CryostatID::CryostatID_t(0));

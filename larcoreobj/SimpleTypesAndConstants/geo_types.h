@@ -100,11 +100,24 @@ namespace geo {
     /// Constructor: valid ID of cryostat with index c
     CryostatID(CryostatID_t c, bool valid): isValid(valid), Cryostat(c) {}
     
+    /// @{
+    /// @name ID validity
+    
     /// Returns true if the ID is valid
     explicit operator bool() const { return isValid; }
     
     /// Returns true if the ID is not valid
     bool operator! () const { return !isValid; }
+    
+    /// Sets the validity of the ID.
+    void setValidity(bool valid) { isValid = valid; }
+    
+    /// Sets the ID as valid.
+    void markValid() { setValidity(true); }
+    
+    /// Sets the ID as invalid.
+    void markInvalid() { setValidity(false); }
+    /// @}
     
     // comparison operators are out of class
     
