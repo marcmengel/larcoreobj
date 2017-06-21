@@ -122,6 +122,13 @@ namespace geo {
     int cmp(CryostatID const& other) const
       { return ThreeWayComparison(deepestIndex(), other.deepestIndex()); }
     
+    /// Conversion to CryostatID (for convenience of notation).
+    CryostatID const& asCryostatID() const { return *this; }
+    /// Conversion to CryostatID (for convenience of notation).
+    CryostatID& asCryostatID() { return *this; }
+    /// Conversion to CryostatID (for convenience of notation).
+    CryostatID const& asConstCryostatID() { return *this; }
+    
     /// Return the value of the invalid ID as a r-value
     static CryostatID_t getInvalidID() { return CryostatID::InvalidID; }
     
@@ -164,6 +171,13 @@ namespace geo {
     auto const& deepestIndex() const { return TPC; }
     /// Returns the deepest ID available (TPC's).
     auto& deepestIndex() { return TPC; }
+    
+    /// Conversion to TPCID (for convenience of notation).
+    TPCID const& asTPCID() const { return *this; }
+    /// Conversion to TPCID (for convenience of notation).
+    TPCID& asTPCID() { return *this; }
+    /// Conversion to TPCID (for convenience of notation).
+    TPCID const& asConstTPCID() { return *this; }
     
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(TPCID const& other) const
@@ -213,6 +227,13 @@ namespace geo {
     /// Returns the deepest ID available (plane's).
     auto& deepestIndex() { return Plane; }
     
+    /// Conversion to PlaneID (for convenience of notation).
+    PlaneID const& asPlaneID() const { return *this; }
+    /// Conversion to PlaneID (for convenience of notation).
+    PlaneID& asPlaneID() { return *this; }
+    /// Conversion to PlaneID (for convenience of notation).
+    PlaneID const& asConstPlaneID() { return *this; }
+    
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(PlaneID const& other) const
       {
@@ -260,6 +281,13 @@ namespace geo {
     auto const& deepestIndex() const { return Wire; }
     /// Returns the deepest ID available (wire's).
     auto& deepestIndex() { return Wire; }
+    
+    /// Conversion to WireID (for convenience of notation).
+    WireID const& asWireID() const { return *this; }
+    /// Conversion to WireID (for convenience of notation).
+    WireID& asWireID() { return *this; }
+    /// Conversion to WireID (for convenience of notation).
+    WireID const& asConstWireID() { return *this; }
     
     /// Returns < 0 if this is smaller than tpcid, 0 if equal, > 0 if larger
     int cmp(WireID const& other) const

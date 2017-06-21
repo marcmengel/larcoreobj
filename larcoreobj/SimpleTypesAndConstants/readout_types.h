@@ -62,6 +62,13 @@ namespace readout {
     explicit operator std::string() const
       { return readout::details::writeToString(*this); }
     
+    /// Conversion to TPCsetID (for convenience of notation).
+    TPCsetID const& asTPCsetID() const { return *this; }
+    /// Conversion to TPCsetID (for convenience of notation).
+    TPCsetID& asTPCsetID() { return *this; }
+    /// Conversion to TPCsetID (for convenience of notation).
+    TPCsetID const& asConstTPCsetID() { return *this; }
+    
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(TPCsetID const& other) const
       {
@@ -71,13 +78,6 @@ namespace readout {
         else              // return the order of cryostats
           return cmp_res;
       } // cmp()
-    
-    //@{
-    /// Conversion to CryostatID (for convenience of notation)
-    CryostatID const& asCryostatID() const { return *this; }
-    CryostatID& asCryostatID() { return *this; }
-    CryostatID const& asConstCryostatID() { return *this; }
-    //@}
     
     /// Return the value of the invalid TPC ID as a r-value
     static TPCsetID_t getInvalidID() { return TPCsetID::InvalidID; }
@@ -122,6 +122,13 @@ namespace readout {
     /// Human-readable representation of the ROP ID
     explicit operator std::string() const
       { return details::writeToString(*this); }
+    
+    /// Conversion to ROPID (for convenience of notation).
+    ROPID const& asROPID() const { return *this; }
+    /// Conversion to ROPID (for convenience of notation).
+    ROPID& asROPID() { return *this; }
+    /// Conversion to ROPID (for convenience of notation).
+    ROPID const& asConstROPID() { return *this; }
     
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     int cmp(ROPID const& other) const
