@@ -1,7 +1,6 @@
 #ifndef RAW_TYPES_H
 #define RAW_TYPES_H
 
-#include <stdint.h> // uint32_t
 #include <limits> // std::numeric_limits<>
 
 namespace raw{
@@ -25,7 +24,7 @@ namespace raw{
   typedef int TDCtick_t;
   
   /// Type representing the ID of a readout channel
-  typedef uint32_t ChannelID_t;
+  typedef unsigned int ChannelID_t;
   
   /// ID of an invalid channel
   constexpr ChannelID_t InvalidChannelID
