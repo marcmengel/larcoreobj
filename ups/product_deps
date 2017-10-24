@@ -20,7 +20,7 @@ fcldir product_dir job
 gdmldir product_dir
 #
 product         version
-canvas		v3_00_02
+canvas		v3_00_03
 
 cetbuildtools	v5_14_00	-	only_for_build
 end_product_list
