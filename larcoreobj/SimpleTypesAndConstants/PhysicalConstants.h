@@ -8,20 +8,48 @@
 #ifndef UTIL_PHYSICALCONSTANTS_H
 #define UTIL_PHYSICALCONSTANTS_H
 
+/**
+ * @brief Generic namespace of utility functions generally independent of LArSoft.
+ * 
+ * Some physical constants are also included here.
+ * As a reminder, the "standard" units in LArSoft are:
+ * * energy: GeV
+ * * time: ns
+ * * space: cm
+ * 
+ */
 namespace util {
 
-  // Recombination factor coefficients come from Nucl.Instrum.Meth.A523:275-286,2004
-  // R = A/(1 + (dE/dx)*k/Efield)
-  // dE/dx is given by the voxel energy deposition, but have to convert it to MeV/cm
-  // from GeV/voxel width
-  // A = 0.800 +/- 0.003
-  // k = 0.0486           needs to be scaled with Electric field.
-  // Efield in kV/cm
-  constexpr double kRecombA        = 0.8;      ///< see Nucl.Instrum.Meth.A523:275-286,2004
-  constexpr double kRecombk        = 0.0486;   ///< in g/(MeVcm^{2})*kV/cm
-  constexpr double kModBoxA        = 0.930;     // Modified Box Alpha (ArgoNeuT JINST)
-  constexpr double kModBoxB        = 0.212;     // in g/(MeVcm^{2})*kV/cm
- // static constexpr double kWion   = 23.6e-6;  ///< ionization potenial in LAr, 23.6 eV = 1e, Wion in MeV/e
+  /**
+   * @{
+   * @name Recombination factor coefficients (NIM).
+   * @see sim::ISCalculationSeparate::CalculateIonizationAndScintillation()
+   *
+   * Recombination factor coefficients come from Nucl.Instrum.Meth.A523:275-286,2004
+   * * @f$ dE/dx @f$ is given by the voxel energy deposition, but have to convert it to MeV/cm from GeV/voxel width
+   * * electric field: @f$ E @f$ in kV/cm
+   * * @f$ R = A/(1 + (dE/dx)*k/E) @f$
+   * * @f$ A = 0.800 \pm 0.003 @f$
+   * * @f$ k = 0.0486 @f$ needs to be scaled with Electric field
+   */
+  constexpr double kRecombA        = 0.800;    ///< _A_ constant.
+  constexpr double kRecombk        = 0.0486;   ///< _k_ constant, in g/(MeV cm&sup2;)*kV/cm.
+  /// @}
+  /**
+   * @{
+   * @name Recombination factor coefficients (modified box, ArguNeuT JINST).
+   * @see sim::ISCalculationSeparate::CalculateIonizationAndScintillation()
+   *
+   * Recombination factor coefficients come from Nucl.Instrum.Meth.A523:275-286,2004
+   * * @f$ dE/dx @f$ is given by the voxel energy deposition, but have to convert it to MeV/cm from GeV/voxel width
+   * * electric field: @f$ E @f$ in kV/cm
+   * * `kModBoxB` needs to be scaled with the electric field.
+   *
+   */
+  constexpr double kModBoxA        = 0.930;    ///< Modified Box Alpha
+  constexpr double kModBoxB        = 0.212;    ///< Modified Box Beta in g/(MeV cm&sup2;)*kV/cm
+  // constexpr double kWion          = 23.6e-6;  ///< ionization potenial in LAr, 23.6 eV = 1e, Wion in MeV/e
+  /// @}
 
   // Conversion for energy deposited in GeV to number of ionization electrons produced
   constexpr double kGeVToElectrons = 4.237e7; ///< 23.6eV per ion pair, 1e9 eV/GeV
