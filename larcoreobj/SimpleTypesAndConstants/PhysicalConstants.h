@@ -27,7 +27,8 @@ namespace util {
   constexpr double kGeVToElectrons = 4.237e7; ///< 23.6eV per ion pair, 1e9 eV/GeV
 
   // More constants
-  //static double kc    = 2.99792458e10;   ///< cm/s
+  /// Speed of light in vacuum in LArSoft units [cm/ns].
+  constexpr double kc = 29.9792458;
   //static double khbar = 6.58211899e-22;  ///< MeVs
 
   // Conversion factors
@@ -57,7 +58,6 @@ namespace util {
   /// Converts the argument angle from radians into degrees (@f$ \pi \rightarrow 180 @f$)
   template <typename T>
   inline constexpr T RadiansToDegrees(T angle) { return angle / pi<T>() * 180; }
-  
   
   
 } // namespace util
