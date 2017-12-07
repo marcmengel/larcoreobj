@@ -1,0 +1,17 @@
+<!--
+  Driver for classes for which a dictionary is needed.
+  
+  Include art::Wrapper lines for objects that we would like to put _directly_
+  into the event.
+  Include the non-wrapper lines for all objects on the art::Wrapper
+  lines and for all objects that are data members of those objects.
+  
+   -->
+
+ 
+<lcgdict>
+  <class name="geo::Vector_t" />
+  <class name="geo::Point_t" />
+  <class name="std::vector<geo::Vector_t>" />
+  <class name="std::vector<geo::Point_t>" />
+ </lcgdict>

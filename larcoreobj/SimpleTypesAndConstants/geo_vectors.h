@@ -39,22 +39,6 @@ namespace geo {
    */
   /// @{
   
-  /// Type used for coordinates and distances. They are measured in centimeters.
-  using Length_t = double;
-  
-  /**
-   * @brief Tag for vectors in the global coordinate system.
-   * 
-   * A vector tagged as "global" is expected to be represented in the global
-   * (or "world") coordinate system.
-   * 
-   * That system is the one the detector geometry is described in, and it is
-   * defined by the GDML detector description.
-   * The linear coordinates are described in _centimeters_.
-   * 
-   */
-  using GlobalCoords = ROOT::Math::GlobalCoordinateSystemTag;
-  
   /**
    * @brief Type for representation of momenta in 3D space.
    * 
@@ -65,7 +49,10 @@ namespace geo {
    * 
    */
   using Vector_t = ROOT::Math::DisplacementVector3D
-    <ROOT::Math::Cartesian3D<Length_t>, GlobalCoords>;
+    <ROOT::Math::Cartesian3D<double>, ROOT::Math::GlobalCoordinateSystemTag>;
+  
+  /// Type used for coordinates and distances. They are measured in centimeters.
+  using Length_t = typename Vector_t::Scalar;
   
   /**
    * @brief Type for representation of position in physical 3D space.
@@ -83,7 +70,20 @@ namespace geo {
    * 
    */
   using Point_t = ROOT::Math::PositionVector3D
-    <ROOT::Math::Cartesian3D<Length_t>, GlobalCoords>;
+    <ROOT::Math::Cartesian3D<double>, ROOT::Math::GlobalCoordinateSystemTag>;
+  
+  /**
+   * @brief Tag for vectors in the global coordinate system.
+   * 
+   * A vector tagged as "global" is expected to be represented in the global
+   * (or "world") coordinate system.
+   * 
+   * That system is the one the detector geometry is described in, and it is
+   * defined by the GDML detector description.
+   * The linear coordinates are described in _centimeters_.
+   * 
+   */
+  using GlobalCoords = ROOT::Math::GlobalCoordinateSystemTag;
   
   /// Type for representation of space rotations.
   using Rotation_t = ROOT::Math::Rotation3D;
