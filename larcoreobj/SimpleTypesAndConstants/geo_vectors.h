@@ -188,46 +188,6 @@ namespace geo {
   /// @}
   
   
-  //--------------------------------------------------------------------------
-  /// @{
-  /// @name Geometry vector output to stream.
-  
-  /**
-   * @brief Prints a geometry vector into a stream
-   * @tparam Stream type of output stream
-   * @param out the output stream
-   * @param p the 3D point to be printed
-   * @return a reference to the output stream
-   * 
-   * The point is printed with the format: `{ x, y, z }`.
-   * No end-of-line character is emitted.
-   */
-  template <typename Stream>
-  Stream& operator<< (Stream&& out, Point_t const& p)
-    {
-      out << "{ " << p.X() << ", " << p.Y() << ", " << p.Z() << " }";
-      return out;
-    }
-  
-  /**
-   * @brief Prints a geometry vector into a stream
-   * @tparam Stream type of output stream
-   * @param out the output stream
-   * @param v the 3D vector to be printed
-   * @return a reference to the output stream
-   * 
-   * The vector is printed with the format: `{ x, y, z }`.
-   * No end-of-line character is emitted.
-   */
-  template <typename Stream>
-  Stream& operator<< (Stream&& out, Vector_t const& v)
-    {
-      out << "{ " << v.X() << ", " << v.Y() << ", " << v.Z() << " }";
-      return out;
-    }
-  
-  /// @}
-  
   //----------------------------------------------------------------------------
 
 } // namespace geo
