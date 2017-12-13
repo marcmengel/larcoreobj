@@ -1,6 +1,6 @@
 # The parent line must be the first non-comment line in the file
 # This line defines the product name and version
-parent	larcoreobj	v1_17_00
+parent	larcoreobj	v1_18_00
 defaultqual	e14
 
 # These optional lines define the installed directories where
@@ -22,7 +22,7 @@ gdmldir product_dir
 product         version
 canvas		v3_00_03
 
-cetbuildtools	v5_14_03	-	only_for_build
+cetbuildtools	v6_01_00	-	only_for_build
 end_product_list
 
 qualifier	canvas		notes
