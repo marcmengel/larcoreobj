@@ -1,7 +1,9 @@
 /**
- * @file   geo_types.h
+ * @defgroup Geometry Detector geometry information
+ * @file   larcoreobj/SimpleTypesAndConstants/geo_types.h
  * @brief  Definition of data types for geometry description.
  * @author Brian Rebel (brebel@fnal.gov)
+ * @ingroup Geometry
  * 
  * This library is currently header-only and depends only on standard C++.
  * 
@@ -22,7 +24,42 @@ namespace geo {
     template <typename T>
     std::string writeToString(T const& value);
   } // namespace details
+} // namespace geo
   
+// BEGIN Geometry --------------------------------------------------------------
+/**
+ * @addtogroup Geometry
+ * @see `geo::GeometryCore`
+ * 
+ * The description of the detector as seen by LArSoft is accessed via LArSoft
+ * "geometry system".
+ * 
+ * A high level explanation of the geometry description is present in the
+ * official [LArSoft collaboration web site](http://larsoft.org), at the bottom
+ * of which further sources are detailed.
+ * 
+ * The geometry system revolves around the `geo::GeometryCore` service provider,
+ * which is the hub to access all the geometry information.
+ * The information accessible via this interface include:
+ * * geometric description of the TPC components (wires, cryostats...)
+ * * geometric description of the optical detectors
+ * * geometric description of the "auxiliary" detectors (i.e. every detector
+ *   which is not the two above)
+ * * a ROOT representation of the detector geometry
+ * * relation between readout channels and physical components (especially TPC
+ *   readout channels vs. wires)
+ * * tools to navigate this information
+ * * ... and a load more stuff.
+ * 
+ * The service provider can be obtained including `larcore/Geometry/Geometry.h`
+ * header and calling:
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
+ * auto const& geom = *(lar::providerFrom<geo::Geometry>());
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 
+ */
+/// @{
+namespace geo {
   
   /// @{
   /// @name Geometry enumerators
@@ -466,9 +503,14 @@ namespace geo {
       return std::abs( y ) > std::abs( otherIntersect.y );
     }
   };
-  
-  
-  //----------------------------------------------------------------------------
+
+} // namespace geo
+/// @}  
+// END Geometry ----------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+namespace geo {
   namespace details {
     
     template <typename T>
@@ -481,4 +523,7 @@ namespace geo {
   } // namespace details
 
 } // namespace geo
+
+//------------------------------------------------------------------------------
+
 #endif // LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_TYPES_H

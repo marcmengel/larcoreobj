@@ -3,6 +3,7 @@
  * @brief  Definitions of geometry vector data types.
  * @author Gianluca Petrillo (petrillo@fnal.gov)
  * @date   March 23, 2017
+ * @ingroup Geometry
  * 
  * This library depends on ROOT GenVector.
  * In the CET link list in `CMakeLists.txt`, link to `${ROOT_GENVECTOR}`.
@@ -21,6 +22,19 @@
 #include "Math/GenVector/Rotation3D.h"
 
 
+// BEGIN Geometry group --------------------------------------------------------
+/// @ingroup Geometry
+/// @{
+
+/**
+ * @brief LArSoft geometry interface.
+ * @see `geo::GeometryCore`
+ * 
+ * The `geo` namespace includes all LArSoft data types, classes and functions
+ * related to detector geometry.
+ * 
+ * For more guidance, dee the @ref Geometry "LArSoft geometry module".
+ */
 namespace geo {
   
   ///@{
@@ -191,6 +205,8 @@ namespace geo {
   //----------------------------------------------------------------------------
 
 } // namespace geo
+/// @}
+// END Geometry group ----------------------------------------------------------
 
 
 #endif // LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
