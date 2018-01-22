@@ -20,12 +20,12 @@ fcldir product_dir job
 gdmldir product_dir
 #
 product         version
-canvas		v3_01_03
+canvas_root_io	v1_00_05
 
 cetbuildtools	v6_01_01	-	only_for_build
 end_product_list
 
-qualifier	canvas		notes
+qualifier	canvas_root_io	notes
 e14:debug	e14:debug
 e14:opt		e14:opt
 e14:prof	e14:prof
