@@ -12,5 +12,13 @@
 namespace sumdata{
 
   //----------------------------------------------------------------------------
+  void POTSummary::aggregate(POTSummary const& other) {
+    totpot     += other.totpot    ;
+    totgoodpot += other.totgoodpot;
+    totspills  += other.totspills ;
+    goodspills += other.goodspills;
+  } // POTSummary::aggregate()
   
+  //----------------------------------------------------------------------------
+
 }// end namespace

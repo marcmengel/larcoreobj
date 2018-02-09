@@ -15,12 +15,14 @@ namespace sumdata {
   public: 
     double totpot = 0.0;
     double totgoodpot = 0.0;
-
+    
     int totspills = 0;
     int goodspills = 0;
     
     
     POTSummary() = default;
+    
+    void aggregate(POTSummary const& other);
     
   };
 
