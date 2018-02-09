@@ -1,35 +1,50 @@
 ////////////////////////////////////////////////////////////////////////
-/// \file POTSummary.h
+/// \file larcoreobj/SummaryData/POTSummary.h
 /// 
 /// Definition of object to store pot related information
 /// 
 /// \author  brebel@fnal.gov
 ////////////////////////////////////////////////////////////////////////
-#ifndef POTSUM_H
-#define POTSUM_H
+#ifndef LARCOREOBJ_SUMMARYDATA_POTSUMMARY_H
+#define LARCOREOBJ_SUMMARYDATA_POTSUMMARY_H
 
-#include <iostream>
 
 namespace sumdata {
 
   class POTSummary {
   public: 
-    POTSummary();
+    double totpot = 0.0;
+    double totgoodpot = 0.0;
 
-    double totpot;
-    double totgoodpot;
-
-    int totspills;
-    int goodspills;
-
-
-    friend std::ostream& operator<< (std::ostream& o, POTSummary const& a);
-
-
+    int totspills = 0;
+    int goodspills = 0;
+    
+    
+    POTSummary() = default;
+    
   };
 
-}
-#endif //POTSUM_H
+  template <typename Stream>
+  Stream& operator<< (Stream&& o, POTSummary const& a);
+  
+} // namespace sumdata
+
+
+//----------------------------------------------------------------------------
+template <typename Stream>
+Stream& sumdata::operator<< (Stream&& o, POTSummary const& a)
+{
+  o << "This sub run has " << a.totspills 
+      << " total spills with an exposure of " << a.totpot << " POT"
+    <<"\n with cuts on beam quality, there are " << a.goodspills 
+      << " good spills with an exposure of " << a.totgoodpot 
+    << "\n";
+
+  return o;
+} // sumdata::operator<< (POTSummary)
+
+
+#endif //LARCOREOBJ_SUMMARYDATA_POTSUMMARY_H
      
 
     
