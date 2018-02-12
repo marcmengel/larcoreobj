@@ -20,6 +20,11 @@ namespace sumdata {
 
     RunData(); // Default constructor
 
+    /// What to do when multiple `RunData` objects are found for the same run.
+    /// 
+    /// @throws std::runtime_error if `other` has a different `DetName()`
+    void aggregate(RunData const& other);
+    
   private:
 
     std::string  fDetName; ///< detector name
