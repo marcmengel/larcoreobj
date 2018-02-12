@@ -29,7 +29,7 @@ namespace sumdata {
     std::string  fDetName; ///< Detector name.
 
   public:
-    explicit           RunData(std::string detectorName);
+    explicit           RunData(std::string const& detectorName);
     std::string const& DetName() const;
 
 

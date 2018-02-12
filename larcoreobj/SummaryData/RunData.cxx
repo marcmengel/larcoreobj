@@ -19,7 +19,7 @@ namespace sumdata {
   }
 
   //---------------------------------------------------------
-  RunData::RunData(std::string detectorName) 
+  RunData::RunData(std::string const& detectorName) 
   : fDetName(detectorName)
   {
   }
