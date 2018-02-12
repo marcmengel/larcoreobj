@@ -8,7 +8,6 @@
 #ifndef LARCOREOBJ_SUMMARYDATA_RUNDATA_H
 #define LARCOREOBJ_SUMMARYDATA_RUNDATA_H
 
-#include "larcoreobj/SimpleTypesAndConstants/geo_types.h"
 #include <string>
 
 namespace sumdata {
