@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \file RunData.h
+/// \file larcoreobj/SummaryData/RunData.h
 ///
 /// Definition of object to store run related information
 ///
@@ -26,15 +26,15 @@ namespace sumdata {
     
   private:
 
-    std::string  fDetName; ///< detector name
+    std::string  fDetName; ///< Detector name.
 
   public:
     explicit           RunData(std::string detectorName);
     std::string const& DetName() const;
 
 
-  };
-}
+  }; // RunData
+} // namespace sumdata
 
 
 inline std::string const& sumdata::RunData::DetName() const { return fDetName; }

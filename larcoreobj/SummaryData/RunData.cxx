@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \file RunData.cxx
+/// \file larcoreobj/SummaryData/RunData.cxx
 /// 
 /// Definition of object to store run related information
 /// 
