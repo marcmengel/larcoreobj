@@ -22,6 +22,36 @@
 #include "Math/GenVector/Rotation3D.h"
 
 
+// BEGIN -- GENVECTOR_CONSTEXPR issue ------------------------------------------
+/**
+ * @def GENVECTOR_CONSTEXPR
+ * @brief A declaration is made `constexpr` if GenVector supports it.
+ * 
+ * This macro defines as "constexpr", only if GenVector's vector types can be
+ * used as `constexpr`.
+ * 
+ * Currently the implementation is quite lame, since it does not autodetect
+ * whether GenVector library supports the feature or not, and it assumes it
+ * doesn't. So this becomes basically a placeholder to remind the maintainers
+ * to replace it with an actual `constexpr` when that will be supported.
+ * To make maintainers not forget this, it will explode on each new ROOT
+ * version.
+ * 
+ * A feature request to ROOT was opened as
+ * [JIRA 9320](https://sft.its.cern.ch/jira/browse/ROOT-9320).
+ * 
+ * See also Fermilab Redmine issue #19476 (https://cdcvs.fnal.gov/redmine/issues/19476).
+ */
+#include "RVersion.h"
+#if ROOT_VERSION_CODE <= ROOT_VERSION(6,12,4)
+#define GENVECTOR_CONSTEXPR
+#else
+# error ("Please check if new ROOT supports constexpr GenVector objects.")
+# define GENVECTOR_CONSTEXPR constexpr // ok, this is useless!
+#endif
+// END -- GENVECTOR_CONSTEXPR issue --------------------------------------------
+
+
 // BEGIN Geometry group --------------------------------------------------------
 /// @ingroup Geometry
 /// @{
