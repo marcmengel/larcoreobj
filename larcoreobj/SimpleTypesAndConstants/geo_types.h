@@ -16,6 +16,7 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <iosfwd> // std::ostream
 #include <limits> // std::numeric_limits<>
 
 namespace geo {
@@ -363,35 +364,31 @@ namespace geo {
   //--- ID output operators
   //---
   /// Generic output of CryostatID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, CryostatID const& cid) {
+  inline std::ostream& operator<< (std::ostream& out, CryostatID const& cid) {
     out << "C:" << cid.Cryostat;
     return out;
-  } // operator<< (Stream, CryostatID)
+  } // operator<< (CryostatID)
 
 
   /// Generic output of TPCID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, TPCID const& tid) {
+  inline std::ostream& operator<< (std::ostream& out, TPCID const& tid) {
     out << ((CryostatID const&) tid) << " T:" << tid.TPC;
     return out;
-  } // operator<< (Stream, TPCID)
+  } // operator<< (TPCID)
 
 
   /// Generic output of PlaneID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, PlaneID const& pid) {
+  inline std::ostream& operator<< (std::ostream& out, PlaneID const& pid) {
     out << ((TPCID const&) pid) << " P:" << pid.Plane;
     return out;
-  } // operator<< (Stream, PlaneID)
+  } // operator<< (PlaneID)
 
 
   /// Generic output of WireID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, WireID const& wid) {
+  inline std::ostream& operator<< (std::ostream& out, WireID const& wid) {
     out << ((PlaneID const&) wid) << " W:" << wid.Wire;
     return out;
-  } // operator<< (Stream, WireID)
+  } // operator<< (WireID)
   
   /// @}
   // Geometry element IDs

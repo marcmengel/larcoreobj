@@ -11,6 +11,10 @@
 // LArSoft libraries
 #include "larcoreobj/SimpleTypesAndConstants/geo_types.h"
 
+// C/C++ standard libraries
+#include <iosfwd> // std::ostream
+
+
 namespace readout {
   
   namespace details {
@@ -207,17 +211,15 @@ namespace readout {
   //--- ID output operators
   //---
   /// Generic output of TPCsetID to stream
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, TPCsetID const& sid) {
+  inline std::ostream& operator<< (std::ostream& out, TPCsetID const& sid) {
     out << sid.asCryostatID() << " S:" << sid.TPCset;
     return out;
-  } // operator<< (Stream, TPCsetID)
+  } // operator<< (TPCsetID)
   
-  template <typename Stream>
-  inline Stream& operator<< (Stream& out, ROPID const& rid) {
+  inline std::ostream& operator<< (std::ostream& out, ROPID const& rid) {
     out << rid.asTPCsetID() << " R:" << rid.ROP;
     return out;
-  } // operator<< (Stream, ROPID)
+  } // operator<< (ROPID)
   
   
 } // namespace readout
