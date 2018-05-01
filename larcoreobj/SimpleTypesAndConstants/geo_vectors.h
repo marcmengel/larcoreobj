@@ -43,7 +43,7 @@
  * See also Fermilab Redmine issue #19476 (https://cdcvs.fnal.gov/redmine/issues/19476).
  */
 #include "RVersion.h"
-#if ROOT_VERSION_CODE <= ROOT_VERSION(6,12,4)
+#if ROOT_VERSION_CODE <= ROOT_VERSION(6,12,6)
 #define GENVECTOR_CONSTEXPR
 #else
 # error ("Please check if new ROOT supports constexpr GenVector objects.")
