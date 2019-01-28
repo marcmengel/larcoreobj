@@ -159,9 +159,11 @@ namespace geo {
     
     // comparison operators are out of class
     
-    /// Human-readable representation of the cryostat ID
-    explicit operator std::string() const
-      { return details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the cryostat ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (cryostat's).
@@ -213,9 +215,11 @@ namespace geo {
 
     // comparison operators are out of class
 
-    /// Human-readable representation of the TPC ID
-    explicit operator std::string() const
-      { return details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the TPC ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (TPC's).
@@ -268,9 +272,11 @@ namespace geo {
 
     // comparison operators are out of class
     
-    /// Human-readable representation of the plane ID
-    explicit operator std::string() const
-      { return details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the plane ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (plane's).
@@ -323,9 +329,11 @@ namespace geo {
     WireID(CryostatID_t c, TPCID_t t, PlaneID_t p, WireID_t w):
       PlaneID(c, t, p), Wire(w) {}
 
-    /// Human-readable representation of the wire ID
-    explicit operator std::string() const
-      { return details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the wire ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (wire's).

@@ -62,9 +62,11 @@ namespace readout {
 
     // comparison operators are out of class
 
-    /// Human-readable representation of the TPC set ID
-    explicit operator std::string() const
-      { return readout::details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the TPC set ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     /// Conversion to TPCsetID (for convenience of notation).
     TPCsetID const& asTPCsetID() const { return *this; }
@@ -123,9 +125,11 @@ namespace readout {
 
     // comparison operators are out of class
     
-    /// Human-readable representation of the ROP ID
-    explicit operator std::string() const
-      { return details::writeToString(*this); }
+    //@{
+    /// Human-readable representation of the ROP ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
     
     /// Conversion to ROPID (for convenience of notation).
     ROPID const& asROPID() const { return *this; }
