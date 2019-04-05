@@ -44,6 +44,10 @@ static_assert(
   "geo::CryostatID can be implicitly converted to an integral type"
   );
 static_assert(
+  !std::is_convertible<geo::OpDetID, geo::CryostatID::CryostatID_t>::value,
+  "geo::OpDetID can be implicitly converted to an integral type"
+  );
+static_assert(
   !std::is_convertible<geo::TPCID, geo::CryostatID::CryostatID_t>::value,
   "geo::TPCID can be implicitly converted to an integral type"
   );
@@ -141,6 +145,7 @@ void TestIDcomparison(
 } // TestCryostatComparison()
 
 
+// --- BEGIN CryostatID tests --------------------------------------------------
 void test_CryostatID_defaultConstructor() {
   
   BOOST_TEST_MESSAGE("Testing default-constructed cryostat ID");
@@ -196,7 +201,114 @@ void test_CryostatID_directConstructor() {
 } // test_CryostatID_directConstructor()
 
 
+// --- END CryostatID tests ----------------------------------------------------
 
+
+
+// --- BEGIN OpDetID tests -----------------------------------------------------
+void test_OpDetID_defaultConstructor() {
+  
+  BOOST_TEST_CHECKPOINT("Testing default-constructed optical detector ID");
+  
+  geo::OpDetID oid;
+  
+  // a default-constructed ID is invalid:
+  TestIDvalidity(oid, false);
+  TestSetIDvalidity(oid);
+  
+  BOOST_CHECK_EQUAL(&oid.deepestIndex(), &oid.OpDet);
+  BOOST_CHECK_EQUAL(&makeConst(oid).deepestIndex(), &oid.OpDet);
+  
+} // test_OpDetID_defaultConstructor()
+
+
+void test_OpDetID_integralConstructor() {
+  
+  BOOST_TEST_CHECKPOINT("Testing integral-constructed optical detector ID");
+  
+#if GEO_TYPES_TEST_SKIP_COMPILATION_ERRORS
+  BOOST_TEST_MESSAGE("  (test skipped)");
+#else
+  geo::OpDetID oid(1);
+  
+  BOOST_TEST_MESSAGE("OpDetID(1) = " << std::string(oid));
+  
+  geo::OpDetID::OpDetID_t what = oid;
+  
+  BOOST_TEST_MESSAGE("int(OpDetID(1)) = " << what);
+  
+#endif // GEO_TYPES_TEST_SKIP_COMPILATION_ERRORS
+  
+} // test_OpDetID_integralConstructor()
+
+
+void test_OpDetID_nestedConstructor() {
+  
+  BOOST_TEST_CHECKPOINT("Testing ID-constructed optical detector ID");
+  
+  geo::CryostatID cid(1);
+  geo::OpDetID oid(cid, 15);
+  
+  // an explicitly constructed ID is valid:
+  TestIDvalidity(oid, true);
+  TestSetIDvalidity(oid);
+  
+  // check the ID value
+  BOOST_CHECK_EQUAL(oid.Cryostat, geo::CryostatID::CryostatID_t( 1));
+  BOOST_CHECK_EQUAL(oid.OpDet,          geo::OpDetID::OpDetID_t(15));
+  
+  // test comparison operators (exercise copy constructor too)
+  // - with optical detector ID
+  BOOST_TEST_CHECKPOINT("Testing comparison with optical detector ID");
+  geo::OpDetID smaller_oid(cid, oid.OpDet - 1), same_oid(oid),
+    larger_oid(cid, oid.OpDet + 1);
+  
+  TestIDcomparison(oid, smaller_oid, same_oid, larger_oid);
+  
+} // test_OpDetID_nestedConstructor()
+ 
+
+void test_OpDetID_directConstructor() {
+  
+  BOOST_TEST_CHECKPOINT("Testing optical detector ID constructed with indices");
+  
+  geo::OpDetID oid(1, 15);
+  
+  // an explicitly constructed ID is valid:
+  TestIDvalidity(oid, true);
+  TestSetIDvalidity(oid);
+  
+  BOOST_TEST_CHECKPOINT("Testing comparison with same cryostat ID");
+  
+  geo::OpDetID smaller_oid(1, 14), same_oid(1, 15), larger_oid(1, 16);
+  TestIDcomparison(oid, smaller_oid, same_oid, larger_oid);
+  
+  BOOST_TEST_CHECKPOINT("Testing comparison with different cryostat ID");
+  geo::OpDetID smaller_cid(0, 16), larger_cid(2, 14);
+  TestCompareSmallerID(oid, smaller_cid);
+  TestCompareLargerID(oid, larger_cid);
+  
+  // make sure the ID with optical detector 0 is fine (it's not a bad ID!)
+  BOOST_TEST_CHECKPOINT
+    ("Testing optical detector ID constructed with OpDet #0");
+  
+  geo::OpDetID first_oid(0, 0);
+  TestIDvalidity(first_oid, true);
+  TestSetIDvalidity(first_oid);
+  
+  // - check the ID value
+  BOOST_CHECK_EQUAL(first_oid.Cryostat, geo::CryostatID::CryostatID_t(0));
+  BOOST_CHECK_EQUAL(first_oid.OpDet,          geo::OpDetID::OpDetID_t(0));
+  
+  
+} // test_OpDetID_directConstructor()
+
+
+// --- END OpDetID tests -------------------------------------------------------
+
+
+
+// --- BEGIN TPCID tests -------------------------------------------------------
 void test_TPCID_defaultConstructor() {
   
   BOOST_TEST_CHECKPOINT("Testing default-constructed TPC ID");
@@ -294,7 +406,11 @@ void test_TPCID_directConstructor() {
 } // test_TPCID_directConstructor()
 
 
+// --- END TPCID tests ---------------------------------------------------------
 
+
+
+// --- BEGIN PlaneID tests -----------------------------------------------------
 void test_PlaneID_defaultConstructor() {
   
   BOOST_TEST_CHECKPOINT("Testing default-constructed plane ID");
@@ -411,7 +527,11 @@ void test_PlaneID_directConstructor() {
 } // test_PlaneID_directConstructor()
 
 
+// --- END PlaneID tests -------------------------------------------------------
 
+
+
+// --- BEGIN WireID tests ------------------------------------------------------
 void test_WireID_defaultConstructor() {
   
   BOOST_TEST_CHECKPOINT("Testing default-constructed wire ID");
@@ -541,6 +661,8 @@ void test_WireID_directConstructor() {
 } // test_WireID_directConstructor()
 
 
+// --- END WireID tests -------------------------------------------------------
+
 
 //
 // CryostatID test
@@ -548,6 +670,16 @@ void test_WireID_directConstructor() {
 BOOST_AUTO_TEST_CASE(CryostatIDtest) {
   test_CryostatID_defaultConstructor();
   test_CryostatID_directConstructor();
+}
+
+//
+// OpDetID test
+//
+BOOST_AUTO_TEST_CASE(OpDetIDtest) {
+  test_OpDetID_defaultConstructor();
+  test_OpDetID_nestedConstructor();
+  test_OpDetID_directConstructor();
+  test_OpDetID_integralConstructor();
 }
 
 //

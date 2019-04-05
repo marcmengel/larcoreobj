@@ -193,6 +193,66 @@ namespace geo {
   }; // struct CryostatID
   
   
+  /// The data type to uniquely identify a optical detector.
+  struct OpDetID: public CryostatID {
+    typedef unsigned int OpDetID_t; ///< Type for the ID number.
+    
+    // not constexpr because we would need an implementation file to define it
+    /// Special code for an invalid ID.
+    static const OpDetID_t InvalidID = std::numeric_limits<OpDetID_t>::max();
+    
+    
+    /// Index of the optical detector within its cryostat.
+    OpDetID_t OpDet = InvalidID;
+    
+    /// Default constructor: an invalid optical detector ID.
+    OpDetID() = default;
+
+    /// Constructor: optical detector with index `o` in the cryostat identified
+    /// by `cryoid`
+    OpDetID(CryostatID const& cryoid, OpDetID_t o)
+      : CryostatID(cryoid), OpDet(o) {}
+
+    /// Constructor: opdtical detector with index `o` in the cryostat index `c`
+    OpDetID(CryostatID_t c, OpDetID_t o): CryostatID(c), OpDet(o) {}
+
+    // comparison operators are out of class
+
+    //@{
+    /// Human-readable representation of the optical detector ID.
+    std::string toString() const { return details::writeToString(*this); }
+    explicit operator std::string() const { return toString(); }
+    //@}
+    
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (OpDet's).
+    auto const& deepestIndex() const { return OpDet; }
+    /// Returns the deepest ID available (OpDet's).
+    auto& deepestIndex() { return OpDet; }
+    
+    /// Conversion to OpDetID (for convenience of notation).
+    OpDetID const& asOpDetID() const { return *this; }
+    /// Conversion to OpDetID (for convenience of notation).
+    OpDetID& asOpDetID() { return *this; }
+    /// Conversion to OpDetID (for convenience of notation).
+    OpDetID const& asConstOpDetID() { return *this; }
+    
+    /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
+    int cmp(OpDetID const& other) const
+      {
+        int cmp_res = CryostatID::cmp(other);
+        if (cmp_res == 0) // same cryostat: compare optical detectors
+          return ThreeWayComparison(deepestIndex(), other.deepestIndex());
+        else              // return the order of cryostats
+          return cmp_res;
+      } // cmp()
+    
+    /// Return the value of the invalid optical detector ID as a r-value
+    static OpDetID_t getInvalidID() { return OpDetID::InvalidID; }
+    
+  }; // struct OpDetID
+  
+  
   /// The data type to uniquely identify a TPC.
   struct TPCID: public CryostatID {
     typedef unsigned int TPCID_t; ///< Type for the ID number.
@@ -378,6 +438,13 @@ namespace geo {
   } // operator<< (CryostatID)
 
 
+  /// Generic output of OpDetID to stream.
+  inline std::ostream& operator<< (std::ostream& out, OpDetID const& oid) {
+    out << oid.asCryostatID() << " O:" << oid.OpDet;
+    return out;
+  } // operator<< (OpDetID)
+
+
   /// Generic output of TPCID to stream
   inline std::ostream& operator<< (std::ostream& out, TPCID const& tid) {
     out << ((CryostatID const&) tid) << " T:" << tid.TPC;
@@ -420,6 +487,24 @@ namespace geo {
   /// Order cryostats with increasing ID
   inline bool operator< (CryostatID const& a, CryostatID const& b)
     { return a.Cryostat < b.Cryostat; }
+  
+  
+  /// Comparison: the IDs point to same optical detector (validity is ignored)
+  inline bool operator== (OpDetID const& a, OpDetID const& b)
+    { return (a.asCryostatID() == b.asCryostatID()) && (a.OpDet == b.OpDet); }
+  
+  /// Comparison: IDs point to different optical detectors (validity is ignored)
+  inline bool operator!= (OpDetID const& a, OpDetID const& b)
+    { return (a.asCryostatID() != b.asCryostatID()) || (a.OpDet != b.OpDet); }
+  
+  /// Order OpDetID in increasing Cryo, then OpDet
+  inline bool operator< (OpDetID const& a, OpDetID const& b) {
+    int cmp_res = a.asCryostatID().cmp(b);
+    if (cmp_res == 0) // same cryostat: compare optical detectors
+      return a.OpDet < b.OpDet;
+    else              // return the order of cryostats
+      return cmp_res < 0;
+  } // operator< (OpDetID, OpDetID)
   
   
   /// Comparison: the IDs point to the same TPC (validity is ignored)
