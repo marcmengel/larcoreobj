@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 /// \file larcoreobj/SummaryData/RunData.cxx
-/// 
+///
 /// Definition of object to store run related information
-/// 
+///
 /// \author  brebel@fnal.gov
 ////////////////////////////////////////////////////////////////////////
 
@@ -13,20 +13,20 @@
 namespace sumdata {
 
   //---------------------------------------------------------
-  RunData::RunData() 
+  RunData::RunData()
   : fDetName("nodetectorname")
   {
   }
 
   //---------------------------------------------------------
-  RunData::RunData(std::string const& detectorName) 
+  RunData::RunData(std::string const& detectorName)
   : fDetName(detectorName)
   {
   }
 
   //---------------------------------------------------------
   void RunData::aggregate(RunData const& other) {
-    
+
     // Each run is required to have the same detector name.
     // This might be a problem for Monte Carlo jobs which tend to use the same
     // run number for everything.
@@ -36,7 +36,7 @@ namespace sumdata {
         );
     }
   } // RunData::aggregate()
-  
+
   //---------------------------------------------------------
-  
-}  
+
+}

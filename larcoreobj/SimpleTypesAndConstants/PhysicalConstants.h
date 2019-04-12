@@ -10,13 +10,13 @@
 
 /**
  * @brief Generic namespace of utility functions generally independent of LArSoft.
- * 
+ *
  * Some physical constants are also included here.
  * As a reminder, the "standard" units in LArSoft are:
  * * energy: GeV
  * * time: ns
  * * space: cm
- * 
+ *
  */
 namespace util {
 
@@ -73,21 +73,21 @@ namespace util {
   constexpr float  kBogusF            = -999.;                 ///< obviously bogus float value
 
   constexpr double quietCompiler = kBogusD*kBogusI*kBogusF*kRecombA*kRecombk*kGeVToElectrons;
-  
-  
+
+
   /// Returns the constant pi (up to 35 decimal digits of precision)
   template <typename T = double>
   inline constexpr T pi() { return 3.14159265358979323846264338327950288L; }
-  
+
   /// Converts the argument angle from degrees into radians
   template <typename T>
   inline constexpr T DegreesToRadians(T angle) { return angle / 180 * pi<T>(); }
-  
+
   /// Converts the argument angle from radians into degrees (@f$ \pi \rightarrow 180 @f$)
   template <typename T>
   inline constexpr T RadiansToDegrees(T angle) { return angle / pi<T>() * 180; }
-  
-  
+
+
 } // namespace util
 
 #endif //UTIL_PHYSICALCONSTANTS_H

@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 /// \file POTSummary.cxx
-/// 
+///
 /// Definition of object to store pot related information
-/// 
+///
 /// \author  brebel@fnal.gov
 ////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +18,7 @@ namespace sumdata{
     totspills  += other.totspills ;
     goodspills += other.goodspills;
   } // POTSummary::aggregate()
-  
+
   //----------------------------------------------------------------------------
 
 }// end namespace

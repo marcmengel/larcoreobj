@@ -137,7 +137,7 @@ int main() {
   util::DegreesToRadians(util::RadiansToDegrees(util::pi<float>()));
   util::DegreesToRadians(util::RadiansToDegrees(util::pi<double>()));
   util::DegreesToRadians(util::RadiansToDegrees(util::pi<long double>()));
-  
+
   return nbad;
 
 }
