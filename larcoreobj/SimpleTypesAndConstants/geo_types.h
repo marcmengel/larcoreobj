@@ -61,9 +61,10 @@ namespace geo {
  */
 /// @{
 namespace geo {
-
-  /// @{
+  
+  // --- BEGIN -- Geometry enumerators -----------------------------------------
   /// @name Geometry enumerators
+  /// @{
 
   typedef enum coordinates {
     kXCoord, ///< X coordinate.
@@ -108,9 +109,25 @@ namespace geo {
     kPosX = kPos,  ///< Drift towards positive X values.
     kNegX = kNeg   ///< Drift towards negative X values.
   } DriftDirection_t;
-
-  // Geometry enumerators
+  
+  
+  /// Numerical description of geometry element "level".
+  /// The "detector" level is noticeably missing.
+  struct ElementLevel {
+    
+    using Level_t = std::size_t;
+    
+    static constexpr Level_t Cryostat   = 0U;
+    static constexpr Level_t TPC        = 1U;
+    static constexpr Level_t Plane      = 2U;
+    static constexpr Level_t Wire       = 3U;
+    static constexpr Level_t NLevels = 4U;
+    
+  }; // struct ElementLevel
+  
+  
   /// @}
+  // --- END -- Geometry enumerators -------------------------------------------
 
 
   /// @{
@@ -182,6 +199,9 @@ namespace geo {
     /// Conversion to CryostatID (for convenience of notation).
     CryostatID const& asConstCryostatID() { return *this; }
 
+    /// Level of this element.
+    static constexpr auto Level = geo::ElementLevel::Cryostat;
+    
     /// Return the value of the invalid ID as a r-value
     static CryostatID_t getInvalidID() { return CryostatID::InvalidID; }
 
@@ -304,6 +324,9 @@ namespace geo {
           return cmp_res;
       } // cmp()
 
+    /// Level of this element.
+    static constexpr auto Level = geo::ElementLevel::TPC;
+    
     /// Return the value of the invalid TPC ID as a r-value
     static TPCID_t getInvalidID() { return TPCID::InvalidID; }
 
@@ -361,6 +384,9 @@ namespace geo {
           return cmp_res;
       } // cmp()
 
+    /// Level of this element.
+    static constexpr auto Level = geo::ElementLevel::Plane;
+    
     /// Return the value of the invalid plane ID as a r-value
     static PlaneID_t getInvalidID() { return PlaneID::InvalidID; }
 
@@ -422,6 +448,9 @@ namespace geo {
     /// @todo Remove the instances of geo::WireID::planeID() in the code
     PlaneID const& planeID() const { return *this; }
 
+    /// Level of this element.
+    static constexpr auto Level = geo::ElementLevel::Wire;
+    
     /// Return the value of the invalid wire ID as a r-value
     static WireID_t getInvalidID() { return WireID::InvalidID; }
 

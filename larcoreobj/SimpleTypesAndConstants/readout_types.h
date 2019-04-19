@@ -26,8 +26,23 @@ namespace readout {
   } // namespace details
 
 
+  /// Numerical description of geometry element "level".
+  /// The "detector" level is noticeably missing.
+  struct ElementLevel {
+    
+    using Level_t = geo::ElementLevel::Level_t;
+    
+    static constexpr Level_t Cryostat     = 0U;
+    static constexpr Level_t TPCset       = 1U;
+    static constexpr Level_t ReadoutPlane = 2U;
+    static constexpr Level_t Channel      = 3U;
+    static constexpr Level_t NLevels      = 4U;
+    
+  }; // struct ElementLevel
+  
+  
   // We define our own cryostat ID as an alias of the one from geometry
-  typedef geo::CryostatID CryostatID;
+  using CryostatID = geo::CryostatID;
 
 
   /**
@@ -85,6 +100,9 @@ namespace readout {
           return cmp_res;
       } // cmp()
 
+    /// Level of this element.
+    static constexpr auto Level = readout::ElementLevel::TPCset;
+    
     /// Return the value of the invalid TPC ID as a r-value
     static TPCsetID_t getInvalidID() { return TPCsetID::InvalidID; }
 
@@ -155,6 +173,9 @@ namespace readout {
     TPCsetID const& asConstTPCsetID() { return *this; }
     //@}
 
+    /// Level of this element.
+    static constexpr auto Level = readout::ElementLevel::ReadoutPlane;
+    
     /// Return the value of the invalid ROP ID as a r-value
     static ROPID_t getInvalidID() { return ROPID::InvalidID; }
 
