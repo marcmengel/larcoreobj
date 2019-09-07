@@ -139,7 +139,7 @@ namespace geo {
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
-    static const CryostatID_t InvalidID
+    static constexpr CryostatID_t InvalidID
       = std::numeric_limits<CryostatID_t>::max();
 
 
@@ -147,22 +147,23 @@ namespace geo {
     CryostatID_t Cryostat = InvalidID; ///< Index of cryostat.
 
     /// Default constructor: an invalid cryostat.
-    CryostatID() = default;
+    constexpr CryostatID() = default;
 
     /// Constructor: valid ID of cryostat with index c
-    explicit CryostatID(CryostatID_t c): isValid(true), Cryostat(c) {}
+    explicit constexpr CryostatID(CryostatID_t c): isValid(true), Cryostat(c) {}
 
     /// Constructor: valid ID of cryostat with index c
-    CryostatID(CryostatID_t c, bool valid): isValid(valid), Cryostat(c) {}
+    constexpr CryostatID(CryostatID_t c, bool valid)
+      : isValid(valid), Cryostat(c) {}
 
     /// @{
     /// @name ID validity
 
     /// Returns true if the ID is valid
-    explicit operator bool() const { return isValid; }
+    explicit constexpr operator bool() const { return isValid; }
 
     /// Returns true if the ID is not valid
-    bool operator! () const { return !isValid; }
+    constexpr bool operator! () const { return !isValid; }
 
     /// Sets the validity of the ID.
     void setValidity(bool valid) { isValid = valid; }
@@ -184,30 +185,31 @@ namespace geo {
 
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (cryostat's).
-    auto const& deepestIndex() const { return Cryostat; }
+    constexpr auto const& deepestIndex() const { return Cryostat; }
     /// Returns the deepest ID available (cryostat's).
     auto& deepestIndex() { return Cryostat; }
 
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(CryostatID const& other) const
+    constexpr int cmp(CryostatID const& other) const
       { return ThreeWayComparison(deepestIndex(), other.deepestIndex()); }
 
     /// Conversion to CryostatID (for convenience of notation).
-    CryostatID const& asCryostatID() const { return *this; }
+    constexpr CryostatID const& asCryostatID() const { return *this; }
     /// Conversion to CryostatID (for convenience of notation).
     CryostatID& asCryostatID() { return *this; }
     /// Conversion to CryostatID (for convenience of notation).
-    CryostatID const& asConstCryostatID() { return *this; }
+    constexpr CryostatID const& asConstCryostatID() { return *this; }
 
     /// Level of this element.
     static constexpr auto Level = geo::ElementLevel::Cryostat;
     
     /// Return the value of the invalid ID as a r-value
-    static CryostatID_t getInvalidID() { return CryostatID::InvalidID; }
+    static constexpr CryostatID_t getInvalidID()
+      { return CryostatID::InvalidID; }
 
     /// Returns < 0 if a < b, 0 if a == b, > 0 if a > b
     template <typename T>
-    static int ThreeWayComparison(T a, T b)
+    static constexpr int ThreeWayComparison(T a, T b)
       { return (a == b)? 0: ((a < b)? -1: +1); }
 
   }; // struct CryostatID
@@ -219,22 +221,23 @@ namespace geo {
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
-    static const OpDetID_t InvalidID = std::numeric_limits<OpDetID_t>::max();
+    static constexpr OpDetID_t InvalidID
+      = std::numeric_limits<OpDetID_t>::max();
 
 
     /// Index of the optical detector within its cryostat.
     OpDetID_t OpDet = InvalidID;
 
     /// Default constructor: an invalid optical detector ID.
-    OpDetID() = default;
+    constexpr OpDetID() = default;
 
     /// Constructor: optical detector with index `o` in the cryostat identified
     /// by `cryoid`
-    OpDetID(CryostatID const& cryoid, OpDetID_t o)
+    constexpr OpDetID(CryostatID const& cryoid, OpDetID_t o)
       : CryostatID(cryoid), OpDet(o) {}
 
     /// Constructor: opdtical detector with index `o` in the cryostat index `c`
-    OpDetID(CryostatID_t c, OpDetID_t o): CryostatID(c), OpDet(o) {}
+    constexpr OpDetID(CryostatID_t c, OpDetID_t o): CryostatID(c), OpDet(o) {}
 
     // comparison operators are out of class
 
@@ -246,19 +249,19 @@ namespace geo {
 
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (OpDet's).
-    auto const& deepestIndex() const { return OpDet; }
+    constexpr auto const& deepestIndex() const { return OpDet; }
     /// Returns the deepest ID available (OpDet's).
     auto& deepestIndex() { return OpDet; }
 
     /// Conversion to OpDetID (for convenience of notation).
-    OpDetID const& asOpDetID() const { return *this; }
+    constexpr OpDetID const& asOpDetID() const { return *this; }
     /// Conversion to OpDetID (for convenience of notation).
     OpDetID& asOpDetID() { return *this; }
     /// Conversion to OpDetID (for convenience of notation).
-    OpDetID const& asConstOpDetID() { return *this; }
+    constexpr OpDetID const& asConstOpDetID() { return *this; }
 
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(OpDetID const& other) const
+    constexpr int cmp(OpDetID const& other) const
       {
         int cmp_res = CryostatID::cmp(other);
         if (cmp_res == 0) // same cryostat: compare optical detectors
@@ -268,7 +271,7 @@ namespace geo {
       } // cmp()
 
     /// Return the value of the invalid optical detector ID as a r-value
-    static OpDetID_t getInvalidID() { return OpDetID::InvalidID; }
+    static constexpr OpDetID_t getInvalidID() { return OpDetID::InvalidID; }
 
   }; // struct OpDetID
 
@@ -279,19 +282,20 @@ namespace geo {
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
-    static const TPCID_t InvalidID = std::numeric_limits<TPCID_t>::max();
+    static constexpr TPCID_t InvalidID = std::numeric_limits<TPCID_t>::max();
 
 
     TPCID_t TPC = InvalidID; ///< Index of the TPC within its cryostat.
 
     /// Default constructor: an invalid TPC ID.
-    TPCID() = default;
+    constexpr TPCID() = default;
 
     /// Constructor: TPC with index t in the cryostat identified by cryoid
-    TPCID(CryostatID const& cryoid, TPCID_t t): CryostatID(cryoid), TPC(t) {}
+    constexpr TPCID(CryostatID const& cryoid, TPCID_t t)
+      : CryostatID(cryoid), TPC(t) {}
 
     /// Constructor: TPC with index t in the cryostat index c
-    TPCID(CryostatID_t c, TPCID_t t): CryostatID(c), TPC(t) {}
+    constexpr TPCID(CryostatID_t c, TPCID_t t): CryostatID(c), TPC(t) {}
 
     // comparison operators are out of class
 
@@ -303,19 +307,19 @@ namespace geo {
 
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (TPC's).
-    auto const& deepestIndex() const { return TPC; }
+    constexpr auto const& deepestIndex() const { return TPC; }
     /// Returns the deepest ID available (TPC's).
     auto& deepestIndex() { return TPC; }
 
     /// Conversion to TPCID (for convenience of notation).
-    TPCID const& asTPCID() const { return *this; }
+    constexpr TPCID const& asTPCID() const { return *this; }
     /// Conversion to TPCID (for convenience of notation).
     TPCID& asTPCID() { return *this; }
     /// Conversion to TPCID (for convenience of notation).
-    TPCID const& asConstTPCID() { return *this; }
+    constexpr TPCID const& asConstTPCID() { return *this; }
 
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(TPCID const& other) const
+    constexpr int cmp(TPCID const& other) const
       {
         int cmp_res = CryostatID::cmp(other);
         if (cmp_res == 0) // same cryostat: compare TPC
@@ -328,7 +332,7 @@ namespace geo {
     static constexpr auto Level = geo::ElementLevel::TPC;
     
     /// Return the value of the invalid TPC ID as a r-value
-    static TPCID_t getInvalidID() { return TPCID::InvalidID; }
+    static constexpr TPCID_t getInvalidID() { return TPCID::InvalidID; }
 
   }; // struct TPCID
 
@@ -339,19 +343,22 @@ namespace geo {
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
-    static const PlaneID_t InvalidID = std::numeric_limits<PlaneID_t>::max();
+    static constexpr PlaneID_t InvalidID
+      = std::numeric_limits<PlaneID_t>::max();
 
 
     PlaneID_t Plane = InvalidID; ///< Index of the plane within its TPC.
 
     /// Default constructor: an invalid plane ID.
-    PlaneID() = default;
+    constexpr PlaneID() = default;
 
     /// Constructor: plane with index p in the TPC identified by tpcid
-    PlaneID(TPCID const& tpcid, PlaneID_t p): TPCID(tpcid), Plane(p) {}
+    constexpr PlaneID(TPCID const& tpcid, PlaneID_t p)
+      : TPCID(tpcid), Plane(p) {}
 
     /// Constructor: plane with index p in the cryostat index c, TPC index t
-    PlaneID(CryostatID_t c, TPCID_t t, PlaneID_t p): TPCID(c, t), Plane(p) {}
+    constexpr PlaneID(CryostatID_t c, TPCID_t t, PlaneID_t p)
+      : TPCID(c, t), Plane(p) {}
 
     // comparison operators are out of class
 
@@ -363,19 +370,19 @@ namespace geo {
 
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (plane's).
-    auto const& deepestIndex() const { return Plane; }
+    constexpr auto const& deepestIndex() const { return Plane; }
     /// Returns the deepest ID available (plane's).
     auto& deepestIndex() { return Plane; }
 
     /// Conversion to PlaneID (for convenience of notation).
-    PlaneID const& asPlaneID() const { return *this; }
+    constexpr PlaneID const& asPlaneID() const { return *this; }
     /// Conversion to PlaneID (for convenience of notation).
     PlaneID& asPlaneID() { return *this; }
     /// Conversion to PlaneID (for convenience of notation).
-    PlaneID const& asConstPlaneID() { return *this; }
+    constexpr PlaneID const& asConstPlaneID() { return *this; }
 
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(PlaneID const& other) const
+    constexpr int cmp(PlaneID const& other) const
       {
         int cmp_res = TPCID::cmp(other);
         if (cmp_res == 0) // same TPC: compare plane
@@ -388,7 +395,7 @@ namespace geo {
     static constexpr auto Level = geo::ElementLevel::Plane;
     
     /// Return the value of the invalid plane ID as a r-value
-    static PlaneID_t getInvalidID() { return PlaneID::InvalidID; }
+    static constexpr PlaneID_t getInvalidID() { return PlaneID::InvalidID; }
 
   }; // struct PlaneID
 
@@ -399,20 +406,21 @@ namespace geo {
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
-    static const WireID_t InvalidID = std::numeric_limits<WireID_t>::max();
+    static constexpr WireID_t InvalidID = std::numeric_limits<WireID_t>::max();
 
 
     WireID_t Wire = InvalidID; ///< Index of the wire within its plane.
 
     /// Default constructor: an invalid TPC ID.
-    WireID() = default;
+    constexpr WireID() = default;
 
     /// Constructor: wire with index w in the plane identified by planeid
-    WireID(PlaneID const& planeid, WireID_t w): PlaneID(planeid), Wire(w) {}
+    constexpr WireID(PlaneID const& planeid, WireID_t w)
+      : PlaneID(planeid), Wire(w) {}
 
     /// Constructor: wire with index w in cryostat index c, TPC index t,
     /// plane index p
-    WireID(CryostatID_t c, TPCID_t t, PlaneID_t p, WireID_t w):
+    constexpr WireID(CryostatID_t c, TPCID_t t, PlaneID_t p, WireID_t w):
       PlaneID(c, t, p), Wire(w) {}
 
     //@{
@@ -423,19 +431,19 @@ namespace geo {
 
     // the following two methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (wire's).
-    auto const& deepestIndex() const { return Wire; }
+    constexpr auto const& deepestIndex() const { return Wire; }
     /// Returns the deepest ID available (wire's).
     auto& deepestIndex() { return Wire; }
 
     /// Conversion to WireID (for convenience of notation).
-    WireID const& asWireID() const { return *this; }
+    constexpr WireID const& asWireID() const { return *this; }
     /// Conversion to WireID (for convenience of notation).
     WireID& asWireID() { return *this; }
     /// Conversion to WireID (for convenience of notation).
-    WireID const& asConstWireID() { return *this; }
+    constexpr WireID const& asConstWireID() { return *this; }
 
     /// Returns < 0 if this is smaller than tpcid, 0 if equal, > 0 if larger
-    int cmp(WireID const& other) const
+    constexpr int cmp(WireID const& other) const
       {
         int cmp_res = PlaneID::cmp(other);
         if (cmp_res == 0) // same plane: compare wires
@@ -446,13 +454,13 @@ namespace geo {
 
     /// Backward compatibility; use the wire directly or a explicit cast instead
     /// @todo Remove the instances of geo::WireID::planeID() in the code
-    PlaneID const& planeID() const { return *this; }
+    constexpr PlaneID const& planeID() const { return *this; }
 
     /// Level of this element.
     static constexpr auto Level = geo::ElementLevel::Wire;
     
     /// Return the value of the invalid wire ID as a r-value
-    static WireID_t getInvalidID() { return WireID::InvalidID; }
+    static constexpr WireID_t getInvalidID() { return WireID::InvalidID; }
 
   }; // struct WireID
 
