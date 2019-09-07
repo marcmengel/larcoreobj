@@ -46,7 +46,7 @@ namespace readout {
 
 
   /**
-   * @brief Class identifying a set of TPC sharing readout channels
+   * @brief Class identifying a set of TPC sharing readout channels.
    *
    * This identifier provides the cryostat location and a number representing
    * the set of TPCs.
@@ -54,23 +54,25 @@ namespace readout {
    * outside the set.
    */
   struct TPCsetID: public CryostatID {
-    typedef unsigned short TPCsetID_t; ///< type for the ID number
+    using TPCsetID_t = unsigned short; ///< Type for the ID number.
 
     /// Special code for an invalid ID.
     static constexpr TPCsetID_t InvalidID
       = std::numeric_limits<TPCsetID_t>::max();
 
-    TPCsetID_t TPCset; ///< index of the TPC set within its cryostat
+    TPCsetID_t TPCset; ///< Index of the TPC set within its cryostat.
 
-    /// Default constructor: an invalid TPC set ID
-    TPCsetID(): CryostatID(), TPCset(InvalidID) {}
+    /// Default constructor: an invalid TPC set ID.
+    constexpr TPCsetID(): CryostatID(), TPCset(InvalidID) {}
 
-    /// Constructor: TPC set with index g in the cryostat identified by cryoid
-    TPCsetID(CryostatID const& cryoid, TPCsetID_t s):
+    /// Constructor: TPC set with index `s` in the cryostat identified by
+    /// `cryoid`.
+    constexpr TPCsetID(CryostatID const& cryoid, TPCsetID_t s):
       CryostatID(cryoid), TPCset(s) {}
 
-    /// Constructor: TPC with index t in the cryostat index c
-    TPCsetID(CryostatID_t c, TPCsetID_t s): CryostatID(c), TPCset(s) {}
+    /// Constructor: TPC set with index `s` in the cryostat index `c`.
+    constexpr TPCsetID(CryostatID_t c, TPCsetID_t s)
+      : CryostatID(c), TPCset(s) {}
 
     // comparison operators are out of class
 
@@ -81,14 +83,14 @@ namespace readout {
     //@}
 
     /// Conversion to TPCsetID (for convenience of notation).
-    TPCsetID const& asTPCsetID() const { return *this; }
+    constexpr TPCsetID const& asTPCsetID() const { return *this; }
     /// Conversion to TPCsetID (for convenience of notation).
     TPCsetID& asTPCsetID() { return *this; }
     /// Conversion to TPCsetID (for convenience of notation).
-    TPCsetID const& asConstTPCsetID() { return *this; }
+    constexpr TPCsetID const& asConstTPCsetID() { return *this; }
 
-    /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(TPCsetID const& other) const
+    /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger.
+    constexpr int cmp(TPCsetID const& other) const
       {
         int cmp_res = CryostatID::cmp(other);
         if (cmp_res == 0) // same cryostat: compare TPC set
@@ -100,8 +102,8 @@ namespace readout {
     /// Level of this element.
     static constexpr auto Level = readout::ElementLevel::TPCset;
     
-    /// Return the value of the invalid TPC ID as a r-value
-    static TPCsetID_t getInvalidID() { return TPCsetID::InvalidID; }
+    /// Return the value of the invalid TPC ID as a r-value.
+    static constexpr TPCsetID_t getInvalidID() { return TPCsetID::InvalidID; }
 
   }; // struct TPCsetID
 
@@ -118,22 +120,25 @@ namespace readout {
    * The name stands for "readout plane".
    */
   struct ROPID: public TPCsetID {
-    typedef unsigned int ROPID_t; ///< type for the ID number
+    using ROPID_t = unsigned int; ///< Type for the ID number.
 
     /// Special code for an invalid ID.
     static constexpr ROPID_t InvalidID = std::numeric_limits<ROPID_t>::max();
 
-    ROPID_t ROP; ///< index of the plane within its TPC
+    ROPID_t ROP; ///< Index of the plane within its TPC.
 
-    /// Default constructor: an invalid plane ID
-    ROPID(): TPCsetID(), ROP(InvalidID) {}
+    /// Default constructor: an invalid plane ID.
+    constexpr ROPID(): TPCsetID(), ROP(InvalidID) {}
 
-    /// Constructor: readout plane with index r in the TPC set identified by
-    /// tpcsetid
-    ROPID(TPCsetID const& tpcsetid, ROPID_t r): TPCsetID(tpcsetid), ROP(r) {}
+    /// Constructor: readout plane with index `r` in the TPC set identified by
+    /// `tpcsetid`.
+    constexpr ROPID(TPCsetID const& tpcsetid, ROPID_t r)
+      : TPCsetID(tpcsetid), ROP(r) {}
 
-    /// Constructor: plane with index p in the cryostat index c, TPC index t
-    ROPID(CryostatID_t c, TPCsetID_t s, ROPID_t r): TPCsetID(c, s), ROP(r) {}
+    /// Constructor: readout plane with index `r` in the cryostat index `c`,
+    /// TPC set index `s`.
+    constexpr ROPID(CryostatID_t c, TPCsetID_t s, ROPID_t r)
+      : TPCsetID(c, s), ROP(r) {}
 
     // comparison operators are out of class
 
@@ -144,14 +149,14 @@ namespace readout {
     //@}
 
     /// Conversion to ROPID (for convenience of notation).
-    ROPID const& asROPID() const { return *this; }
+    constexpr ROPID const& asROPID() const { return *this; }
     /// Conversion to ROPID (for convenience of notation).
     ROPID& asROPID() { return *this; }
     /// Conversion to ROPID (for convenience of notation).
-    ROPID const& asConstROPID() { return *this; }
+    constexpr ROPID const& asConstROPID() { return *this; }
 
-    /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
-    int cmp(ROPID const& other) const
+    /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger.
+    constexpr int cmp(ROPID const& other) const
       {
         int cmp_res = TPCsetID::cmp(other);
         if (cmp_res == 0) // same TPC set: compare plane
@@ -161,17 +166,17 @@ namespace readout {
       } // cmp()
 
     //@{
-    /// Conversion to TPCsetID (for convenience of notation)
-    TPCsetID const& asTPCsetID() const { return *this; }
+    /// Conversion to TPCsetID (for convenience of notation).
+    constexpr TPCsetID const& asTPCsetID() const { return *this; }
     TPCsetID& asTPCsetID() { return *this; }
-    TPCsetID const& asConstTPCsetID() { return *this; }
+    constexpr TPCsetID const& asConstTPCsetID() { return *this; }
     //@}
 
     /// Level of this element.
     static constexpr auto Level = readout::ElementLevel::ReadoutPlane;
     
-    /// Return the value of the invalid ROP ID as a r-value
-    static ROPID_t getInvalidID() { return ROPID::InvalidID; }
+    /// Return the value of the invalid ROP ID as a r-value.
+    static constexpr ROPID_t getInvalidID() { return ROPID::InvalidID; }
 
   }; // struct ROPID
 
@@ -181,22 +186,22 @@ namespace readout {
   //--- ID comparison operators
   //---
 
-  /// @{
   /// @name Readout ID comparison operators
+  /// @{
   /// @details The result of comparison with invalid IDs is undefined.
 
   /// Comparison: the IDs point to the same TPC set (validity is ignored)
-  inline bool operator== (TPCsetID const& a, TPCsetID const& b) {
+  inline constexpr bool operator== (TPCsetID const& a, TPCsetID const& b) {
     return (a.asCryostatID() == b.asCryostatID()) && (a.TPCset == b.TPCset);
   } // operator== (TPCsetID, TPCsetID)
 
   /// Comparison: the IDs point to different TPC sets (validity is ignored)
-  inline bool operator!= (TPCsetID const& a, TPCsetID const& b) {
+  inline constexpr bool operator!= (TPCsetID const& a, TPCsetID const& b) {
     return (a.asCryostatID() != b.asCryostatID()) || (a.TPCset != b.TPCset);
   } // operator!= (TPCsetID, TPCsetID)
 
   /// Order TPCsetID in increasing Cryo, then TPC set
-  inline bool operator< (TPCsetID const& a, TPCsetID const& b) {
+  inline constexpr bool operator< (TPCsetID const& a, TPCsetID const& b) {
     int cmp_res = a.asCryostatID().cmp(b);
     if (cmp_res == 0) // same cryostat: compare TPC set
       return a.TPCset < b.TPCset;
@@ -206,17 +211,17 @@ namespace readout {
 
 
   /// Comparison: the IDs point to the same ROP (validity is ignored)
-  inline bool operator== (ROPID const& a, ROPID const& b) {
+  inline constexpr bool operator== (ROPID const& a, ROPID const& b) {
     return (a.asTPCsetID() == b.asTPCsetID()) && (a.ROP == b.ROP);
   } // operator== (ROPID, ROPID)
 
   /// Comparison: the IDs point to different ROPs (validity is ignored)
-  inline bool operator!= (ROPID const& a, ROPID const& b) {
+  inline constexpr bool operator!= (ROPID const& a, ROPID const& b) {
     return (a.asTPCsetID() != b.asTPCsetID()) || (a.ROP != b.ROP);
   } // operator!= (ROPID, ROPID)
 
   /// Order ROPID in increasing Cryo, then TPC set, then ROP
-  inline bool operator< (ROPID const& a, ROPID const& b) {
+  inline constexpr bool operator< (ROPID const& a, ROPID const& b) {
     int cmp_res = a.asTPCsetID().cmp(b);
     if (cmp_res == 0) // same TPC set: compare ROP
       return a.ROP < b.ROP;
@@ -224,6 +229,7 @@ namespace readout {
       return cmp_res < 0;
   } // operator< (ROPID, ROPID)
 
+  /// @}
 
 
   //----------------------------------------------------------------------------
