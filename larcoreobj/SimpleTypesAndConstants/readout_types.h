@@ -56,12 +56,9 @@ namespace readout {
   struct TPCsetID: public CryostatID {
     typedef unsigned short TPCsetID_t; ///< type for the ID number
 
-    // not constexpr because we would need an implementation file to define the
-    // constant (and because ROOT 5 does not understand that)
-  //  static constexpr TPCsetID_t InvalidID
-  //    = std::numeric_limits<TPCsetID_t>::max();
-    /// Special code for an invalid ID
-    static const TPCsetID_t InvalidID = USHRT_MAX;
+    /// Special code for an invalid ID.
+    static constexpr TPCsetID_t InvalidID
+      = std::numeric_limits<TPCsetID_t>::max();
 
     TPCsetID_t TPCset; ///< index of the TPC set within its cryostat
 
@@ -123,11 +120,8 @@ namespace readout {
   struct ROPID: public TPCsetID {
     typedef unsigned int ROPID_t; ///< type for the ID number
 
-    // not constexpr because we would need an implementation file to define the
-    // constant (and because ROOT 5 does not understand that)
-  //  static constexpr ROPID_t InvalidID = std::numeric_limits<ROPID_t>::max();
-    /// Special code for an invalid ID
-    static const ROPID_t InvalidID = USHRT_MAX;
+    /// Special code for an invalid ID.
+    static constexpr ROPID_t InvalidID = std::numeric_limits<ROPID_t>::max();
 
     ROPID_t ROP; ///< index of the plane within its TPC
 
