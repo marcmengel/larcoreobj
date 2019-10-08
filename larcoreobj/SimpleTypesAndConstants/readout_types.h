@@ -55,15 +55,28 @@ namespace readout {
    */
   struct TPCsetID: public CryostatID {
     using TPCsetID_t = unsigned short; ///< Type for the ID number.
+    
+    using ThisID_t = TPCsetID; ///< Type of this ID.
+    using ParentID_t = CryostatID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
 
     /// Special code for an invalid ID.
     static constexpr TPCsetID_t InvalidID
       = std::numeric_limits<TPCsetID_t>::max();
 
-    TPCsetID_t TPCset; ///< Index of the TPC set within its cryostat.
+    /// Index of the TPC set within its cryostat.
+    TPCsetID_t TPCset = InvalidID;
 
     /// Default constructor: an invalid TPC set ID.
-    constexpr TPCsetID(): CryostatID(), TPCset(InvalidID) {}
+    constexpr TPCsetID() = default;
 
     /// Constructor: TPC set with index `s` in the cryostat identified by
     /// `cryoid`.
@@ -121,14 +134,25 @@ namespace readout {
    */
   struct ROPID: public TPCsetID {
     using ROPID_t = unsigned int; ///< Type for the ID number.
-
+    
+    using ThisID_t = ROPID; ///< Type of this ID.
+    using ParentID_t = TPCsetID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
     /// Special code for an invalid ID.
     static constexpr ROPID_t InvalidID = std::numeric_limits<ROPID_t>::max();
 
-    ROPID_t ROP; ///< Index of the plane within its TPC.
+    ROPID_t ROP = InvalidID; ///< Index of the readout plane within its TPC set.
 
     /// Default constructor: an invalid plane ID.
-    constexpr ROPID(): TPCsetID(), ROP(InvalidID) {}
+    constexpr ROPID() = default;
 
     /// Constructor: readout plane with index `r` in the TPC set identified by
     /// `tpcsetid`.
