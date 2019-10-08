@@ -514,28 +514,28 @@ namespace geo {
   /// @details The result of comparison with invalid IDs is undefined.
 
   /// Comparison: the IDs point to the same cryostat (validity is ignored)
-  inline bool operator== (CryostatID const& a, CryostatID const& b)
+  inline constexpr bool operator== (CryostatID const& a, CryostatID const& b)
     { return a.Cryostat == b.Cryostat; }
 
   /// Comparison: the IDs point to different cryostats (validity is ignored)
-  inline bool operator!= (CryostatID const& a, CryostatID const& b)
+  inline constexpr bool operator!= (CryostatID const& a, CryostatID const& b)
     { return a.Cryostat != b.Cryostat; }
 
   /// Order cryostats with increasing ID
-  inline bool operator< (CryostatID const& a, CryostatID const& b)
+  inline constexpr bool operator< (CryostatID const& a, CryostatID const& b)
     { return a.Cryostat < b.Cryostat; }
 
 
   /// Comparison: the IDs point to same optical detector (validity is ignored)
-  inline bool operator== (OpDetID const& a, OpDetID const& b)
+  inline constexpr bool operator== (OpDetID const& a, OpDetID const& b)
     { return (a.asCryostatID() == b.asCryostatID()) && (a.OpDet == b.OpDet); }
 
   /// Comparison: IDs point to different optical detectors (validity is ignored)
-  inline bool operator!= (OpDetID const& a, OpDetID const& b)
+  inline constexpr bool operator!= (OpDetID const& a, OpDetID const& b)
     { return (a.asCryostatID() != b.asCryostatID()) || (a.OpDet != b.OpDet); }
 
   /// Order OpDetID in increasing Cryo, then OpDet
-  inline bool operator< (OpDetID const& a, OpDetID const& b) {
+  inline constexpr bool operator< (OpDetID const& a, OpDetID const& b) {
     int cmp_res = a.asCryostatID().cmp(b);
     if (cmp_res == 0) // same cryostat: compare optical detectors
       return a.OpDet < b.OpDet;
@@ -545,21 +545,21 @@ namespace geo {
 
 
   /// Comparison: the IDs point to the same TPC (validity is ignored)
-  inline bool operator== (TPCID const& a, TPCID const& b) {
+  inline constexpr bool operator== (TPCID const& a, TPCID const& b) {
     return
       (static_cast<CryostatID const&>(a) == static_cast<CryostatID const&>(b))
       && (a.TPC == b.TPC);
   } // operator== (TPCID, TPCID)
 
   /// Comparison: the IDs point to different TPCs (validity is ignored)
-  inline bool operator!= (TPCID const& a, TPCID const& b) {
+  inline constexpr bool operator!= (TPCID const& a, TPCID const& b) {
     return
       (static_cast<CryostatID const&>(a) != static_cast<CryostatID const&>(b))
       || (a.TPC != b.TPC);
   } // operator!= (TPCID, TPCID)
 
   /// Order TPCID in increasing Cryo, then TPC
-  inline bool operator< (TPCID const& a, TPCID const& b) {
+  inline constexpr bool operator< (TPCID const& a, TPCID const& b) {
     int cmp_res = (static_cast<CryostatID const&>(a)).cmp(b);
     if (cmp_res == 0) // same cryostat: compare TPC
       return a.TPC < b.TPC;
@@ -569,21 +569,21 @@ namespace geo {
 
 
   /// Comparison: the IDs point to the same plane (validity is ignored)
-  inline bool operator== (PlaneID const& a, PlaneID const& b) {
+  inline constexpr bool operator== (PlaneID const& a, PlaneID const& b) {
     return
       (static_cast<TPCID const&>(a) == static_cast<TPCID const&>(b))
       && (a.Plane == b.Plane);
   } // operator== (PlaneID, PlaneID)
 
   /// Comparison: the IDs point to different planes (validity is ignored)
-  inline bool operator!= (PlaneID const& a, PlaneID const& b) {
+  inline constexpr bool operator!= (PlaneID const& a, PlaneID const& b) {
     return
       (static_cast<TPCID const&>(a) != static_cast<TPCID const&>(b))
       || (a.Plane != b.Plane);
   } // operator!= (PlaneID, PlaneID)
 
   /// Order PlaneID in increasing TPC, then plane
-  inline bool operator< (PlaneID const& a, PlaneID const& b) {
+  inline constexpr bool operator< (PlaneID const& a, PlaneID const& b) {
     int cmp_res = (static_cast<TPCID const&>(a)).cmp(b);
     if (cmp_res == 0) // same TPC: compare plane
       return a.Plane < b.Plane;
@@ -593,21 +593,21 @@ namespace geo {
 
 
   /// Comparison: the IDs point to the same wire (validity is ignored)
-  inline bool operator== (WireID const& a, WireID const& b) {
+  inline constexpr bool operator== (WireID const& a, WireID const& b) {
     return
       (static_cast<PlaneID const&>(a) == static_cast<PlaneID const&>(b))
       && (a.Wire == b.Wire);
   } // operator== (WireID, WireID)
 
   /// Comparison: the IDs point to different wires (validity is ignored)
-  inline bool operator!= (WireID const& a, WireID const& b) {
+  inline constexpr bool operator!= (WireID const& a, WireID const& b) {
     return
       (static_cast<PlaneID const&>(a) != static_cast<PlaneID const&>(b))
       || (a.Wire != b.Wire);
   } // operator!= (WireID, WireID)
 
   // Order WireID in increasing plane, then wire
-  inline bool operator< (WireID const& a, WireID const& b) {
+  inline constexpr bool operator< (WireID const& a, WireID const& b) {
     int cmp_res = (static_cast<PlaneID const&>(a)).cmp(b);
     if (cmp_res == 0) // same plane: compare wire
       return a.Wire < b.Wire;
