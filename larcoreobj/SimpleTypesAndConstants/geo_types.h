@@ -24,6 +24,46 @@ namespace geo {
     /// Write the argument into a string
     template <typename T>
     std::string writeToString(T const& value);
+    
+    /// Whether `ID` represents an element on top of the hierarchy.
+    template <typename ID>
+    constexpr bool isTopGeoElementID = std::is_void_v<typename ID::ParentID_t>;
+    
+    template <typename ID>
+    constexpr std::size_t geoElementLevel() {
+      if constexpr(isTopGeoElementID<ID>) return 0U;
+      else return geoElementLevel<typename ID::ParentID_t>() + 1U;
+    } // geoElementLevel()
+    
+    template <typename ID, std::size_t Index, typename = void>
+    struct AbsIDtypeStruct;
+    
+    template <std::size_t Index, typename ID>
+    using AbsIDtype = typename AbsIDtypeStruct<ID, Index>::type;
+    
+    template <typename ID, std::size_t UpIndex>
+    struct RelIDtypeStruct;
+    
+    template <std::size_t UpIndex, typename ID>
+    using RelIDtype = typename RelIDtypeStruct<ID, UpIndex>::type;
+    
+    template <std::size_t Index, typename ID>
+    constexpr auto getAbsIDindex(ID const& id)
+      {
+        static_assert(Index <= ID::Level, "Index not available for this type.");
+        if constexpr (Index == ID::Level) return id.deepestIndex();
+        else return getAbsIDindex<Index>(id.parentID());
+      }
+    
+    template <std::size_t UpIndex, typename ID>
+    auto getRelIDindex(ID const& id)
+      {
+        static_assert
+          (UpIndex <= ID::Level, "Index not available for this type.");
+        if constexpr (UpIndex == 0) return id.deepestIndex();
+        else return getRelIDindex<UpIndex - 1U>(id.parentID());
+      }
+    
   } // namespace details
 } // namespace geo
 
@@ -136,8 +176,20 @@ namespace geo {
 
   /// The data type to uniquely identify a cryostat.
   struct CryostatID {
-    typedef unsigned int CryostatID_t; ///< Type for the ID number.
-
+    using CryostatID_t = unsigned int; ///< Type for the ID number.
+    
+    using ThisID_t = CryostatID; ///< Type of this ID.
+    using ParentID_t = void; ///< Type of the parent ID (none!).
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
+    
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
     static constexpr CryostatID_t InvalidID
@@ -184,11 +236,21 @@ namespace geo {
     explicit operator std::string() const { return toString(); }
     //@}
 
-    // the following two methods are useful for (templated) abstraction
+    // the following four methods are useful for (templated) abstraction
     /// Returns the value of the deepest ID available (cryostat's).
     constexpr auto const& deepestIndex() const { return Cryostat; }
     /// Returns the deepest ID available (cryostat's).
     auto& deepestIndex() { return Cryostat; }
+    /// Return the parent ID of this one (void).
+    constexpr ParentID_t parentID() const {}
+    /// Return the parent ID of this one (void).
+    ParentID_t parentID() {}
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Returns < 0 if this is smaller than other, 0 if equal, > 0 if larger
     constexpr int cmp(CryostatID const& other) const
@@ -218,8 +280,20 @@ namespace geo {
 
   /// The data type to uniquely identify a optical detector.
   struct OpDetID: public CryostatID {
-    typedef unsigned int OpDetID_t; ///< Type for the ID number.
-
+    using OpDetID_t = unsigned int; ///< Type for the ID number.
+    
+    using ThisID_t = OpDetID; ///< Type of this ID.
+    using ParentID_t = CryostatID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
+    
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
     static constexpr OpDetID_t InvalidID
@@ -253,6 +327,16 @@ namespace geo {
     constexpr auto const& deepestIndex() const { return OpDet; }
     /// Returns the deepest ID available (OpDet's).
     auto& deepestIndex() { return OpDet; }
+    /// Return the parent ID of this one (a cryostat ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Returns the index level `Index` of this type.
+    ParentID_t& parentID() { return *this; }
+    /// Return the parent ID of this one (a cryostat ID).
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to OpDetID (for convenience of notation).
     constexpr OpDetID const& asOpDetID() const { return *this; }
@@ -282,7 +366,19 @@ namespace geo {
 
   /// The data type to uniquely identify a TPC.
   struct TPCID: public CryostatID {
-    typedef unsigned int TPCID_t; ///< Type for the ID number.
+    using TPCID_t = unsigned int; ///< Type for the ID number.
+    
+    using ThisID_t = TPCID; ///< Type of this ID.
+    using ParentID_t = CryostatID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
 
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
@@ -314,6 +410,16 @@ namespace geo {
     constexpr auto const& deepestIndex() const { return TPC; }
     /// Returns the deepest ID available (TPC's).
     auto& deepestIndex() { return TPC; }
+    /// Return the parent ID of this one (a cryostat ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Return the parent ID of this one (a cryostat ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to TPCID (for convenience of notation).
     constexpr TPCID const& asTPCID() const { return *this; }
@@ -343,8 +449,20 @@ namespace geo {
 
   /// The data type to uniquely identify a Plane.
   struct PlaneID: public TPCID {
-    typedef unsigned int PlaneID_t; ///< Type for the ID number.
-
+    using PlaneID_t = unsigned int; ///< Type for the ID number.
+    
+    using ThisID_t = PlaneID; ///< Type of this ID.
+    using ParentID_t = TPCID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
+    
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
     static constexpr PlaneID_t InvalidID
@@ -377,6 +495,16 @@ namespace geo {
     constexpr auto const& deepestIndex() const { return Plane; }
     /// Returns the deepest ID available (plane's).
     auto& deepestIndex() { return Plane; }
+    /// Return the parent ID of this one (a TPC ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Return the parent ID of this one (a TPC ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to PlaneID (for convenience of notation).
     constexpr PlaneID const& asPlaneID() const { return *this; }
@@ -406,8 +534,20 @@ namespace geo {
 
   // The data type to uniquely identify a code wire segment.
   struct WireID: public PlaneID {
-    typedef unsigned int WireID_t; ///< Type for the ID number.
-
+    using WireID_t = unsigned int; ///< Type for the ID number.
+    
+    using ThisID_t = WireID; ///< Type of this ID.
+    using ParentID_t = PlaneID; ///< Type of the parent ID.
+    
+    /// Type of the ID with the specified level `L`.
+    template <std::size_t L>
+    using ID_t = details::AbsIDtype<L, ThisID_t>;
+    
+    /// Type of the ID `A` levels above this one.
+    template <std::size_t A>
+    using UpperID_t = details::RelIDtype<A, ThisID_t>;
+    
+    
     // not constexpr because we would need an implementation file to define it
     /// Special code for an invalid ID.
     static constexpr WireID_t InvalidID = std::numeric_limits<WireID_t>::max();
@@ -438,6 +578,16 @@ namespace geo {
     constexpr auto const& deepestIndex() const { return Wire; }
     /// Returns the deepest ID available (wire's).
     auto& deepestIndex() { return Wire; }
+    /// Return the parent ID of this one (a plane ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Return the parent ID of this one (a plane ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to WireID (for convenience of notation).
     constexpr WireID const& asWireID() const { return *this; }
@@ -644,16 +794,132 @@ namespace geo {
 namespace geo {
   namespace details {
 
+    //--------------------------------------------------------------------------
+    template <typename ID, std::size_t Index, typename /* = void */>
+    struct AbsIDtypeStruct {
+      static_assert(Index <= ID::Level, "Requested ID index is not available.");
+      using type
+        = typename AbsIDtypeStruct<typename ID::ParentID_t, Index>::type;
+    }; // AbsIDtypeStruct<>
+    
+    
+    template <typename ID, std::size_t Index>
+    struct AbsIDtypeStruct<ID, Index, std::enable_if_t<(Index == ID::Level)>> {
+      using type = ID;
+    };
+    
+    
+    //--------------------------------------------------------------------------
+    template <typename ID, std::size_t UpIndex>
+    struct RelIDtypeStruct {
+      static_assert
+        (UpIndex <= ID::Level, "Requested parent ID index is not available.");
+      using type
+        = typename RelIDtypeStruct<typename ID::ParentID_t, UpIndex - 1U>::type;
+    }; // RelIDtypeStruct<>
+    
+    
+    template <typename ID>
+    struct RelIDtypeStruct<ID, 0U> {
+      using type = ID;
+    };
+    
+    //--------------------------------------------------------------------------
     template <typename T>
     inline std::string writeToString(T const& value) {
       std::ostringstream sstr;
       sstr << value;
       return sstr.str();
     } // writeToString()
+    
+    
+    //--------------------------------------------------------------------------
 
   } // namespace details
 
 } // namespace geo
+
+//------------------------------------------------------------------------------
+//--- template implementation
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto geo::CryostatID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::CryostatID::getIndex()
+
+template <std::size_t Above>
+constexpr auto geo::CryostatID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // geo::CryostatID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto geo::OpDetID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::OpDetID::getIndex()
+
+template <std::size_t Above>
+constexpr auto geo::OpDetID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // geo::OpDetID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto geo::TPCID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::TPCID::getIndex()
+
+template <std::size_t Above>
+constexpr auto geo::TPCID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // geo::TPCID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto geo::PlaneID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::PlaneID::getIndex()
+
+template <std::size_t Above>
+constexpr auto geo::PlaneID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // geo::PlaneID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto geo::WireID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::WireID::getIndex()
+
+template <std::size_t Above>
+constexpr auto geo::WireID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // geo::WireID::getRelIndex()
+
 
 //------------------------------------------------------------------------------
 

@@ -18,11 +18,21 @@
 namespace readout {
 
   namespace details {
-
+    
     template <typename T>
     inline std::string writeToString(T const& value)
       { return geo::details::writeToString(value); }
-
+    
+    template <std::size_t Index, typename ID>
+    using AbsIDtype = geo::details::AbsIDtype<Index, ID>;
+    
+    template <std::size_t UpIndex, typename ID>
+    using RelIDtype = geo::details::RelIDtype<UpIndex, ID>;
+    
+    template <std::size_t Index, typename ID>
+    inline constexpr auto getAbsIDindex(ID const& id)
+      { return geo::details::getAbsIDindex<Index, ID>(id); }
+    
   } // namespace details
 
 
@@ -94,6 +104,22 @@ namespace readout {
     std::string toString() const { return details::writeToString(*this); }
     explicit operator std::string() const { return toString(); }
     //@}
+
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (TPC set's).
+    constexpr auto const& deepestIndex() const { return TPCset; }
+    /// Returns the deepest ID available (TPC set's).
+    auto& deepestIndex() { return TPCset; }
+    /// Return the parent ID of this one (a cryostat ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Return the parent ID of this one (a cryostat ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to TPCsetID (for convenience of notation).
     constexpr TPCsetID const& asTPCsetID() const { return *this; }
@@ -171,6 +197,22 @@ namespace readout {
     std::string toString() const { return details::writeToString(*this); }
     explicit operator std::string() const { return toString(); }
     //@}
+
+    // the following two methods are useful for (templated) abstraction
+    /// Returns the value of the deepest ID available (readout plane's).
+    constexpr auto const& deepestIndex() const { return ROP; }
+    /// Returns the deepest ID available (readout plane's).
+    auto& deepestIndex() { return ROP; }
+    /// Return the parent ID of this one (a TPC set ID).
+    constexpr ParentID_t const& parentID() const { return *this; }
+    /// Return the parent ID of this one (a TPC set ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    constexpr auto getIndex() const;
+    /// Returns the index `Above` levels higher than `Level`.
+    template <std::size_t Above>
+    constexpr auto getRelIndex() const;
 
     /// Conversion to ROPID (for convenience of notation).
     constexpr ROPID const& asROPID() const { return *this; }
@@ -266,6 +308,42 @@ namespace readout {
 
 } // namespace readout
 
+
+//------------------------------------------------------------------------------
+//--- template implementation
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto readout::TPCsetID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // readout::TPCsetID::getIndex()
+
+template <std::size_t Above>
+constexpr auto readout::TPCsetID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // readout::TPCsetID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
+template <std::size_t Index /* = 0U */>
+constexpr auto readout::ROPID::getIndex() const {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // readout::ROPID::getIndex()
+
+template <std::size_t Above>
+constexpr auto readout::ROPID::getRelIndex() const {
+  static_assert
+    (Above <= Level, "This ID type does not have the requested Index level.");
+  return getIndex<Level - Above>();
+} // readout::ROPID::getRelIndex()
+
+
+//------------------------------------------------------------------------------
 
 #endif // LARCOREOBJ_SIMPLETYPESANDCONSTANTS_READOUT_TYPES_H
 

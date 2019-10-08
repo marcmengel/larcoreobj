@@ -30,8 +30,41 @@
 
 
 //------------------------------------------------------------------------------
+template <typename ID>
+constexpr bool assertGeoIDlevel()
+  { return geo::details::geoElementLevel<ID>() == ID::Level; }
+
+//------------------------------------------------------------------------------
 // compile-time tests:
 //
+// consistency check between levels
+static_assert(assertGeoIDlevel<readout::TPCsetID>());
+static_assert(assertGeoIDlevel<readout::ROPID>());
+static_assert(!geo::details::isTopGeoElementID<readout::TPCsetID>);
+static_assert(!geo::details::isTopGeoElementID<readout::ROPID>);
+
+static_assert(std::is_same_v<readout::TPCsetID::ID_t<0U>, readout::CryostatID>);
+static_assert(std::is_same_v<readout::TPCsetID::ID_t<1U>, readout::TPCsetID>);
+static_assert(std::is_same_v<readout::TPCsetID::UpperID_t<0U>, readout::TPCsetID>);
+static_assert(std::is_same_v<readout::TPCsetID::UpperID_t<1U>, readout::CryostatID>);
+static_assert(std::is_same_v<readout::ROPID::ID_t<0U>, readout::CryostatID>);
+static_assert(std::is_same_v<readout::ROPID::ID_t<1U>, readout::TPCsetID>);
+static_assert(std::is_same_v<readout::ROPID::ID_t<2U>, readout::ROPID>);
+static_assert(std::is_same_v<readout::ROPID::UpperID_t<0U>, readout::ROPID>);
+static_assert(std::is_same_v<readout::ROPID::UpperID_t<1U>, readout::TPCsetID>);
+static_assert(std::is_same_v<readout::ROPID::UpperID_t<2U>, readout::CryostatID>);
+
+static_assert(readout::TPCsetID{0,1}.getIndex   <0U>() == 0);
+static_assert(readout::TPCsetID{0,1}.getIndex   <1U>() == 1);
+static_assert(readout::TPCsetID{0,1}.getRelIndex<0U>() == 1);
+static_assert(readout::TPCsetID{0,1}.getRelIndex<1U>() == 0);
+static_assert(readout::ROPID{0,1,2} .getIndex   <0U>() == 0);
+static_assert(readout::ROPID{0,1,2} .getIndex   <1U>() == 1);
+static_assert(readout::ROPID{0,1,2} .getIndex   <2U>() == 2);
+static_assert(readout::ROPID{0,1,2} .getRelIndex<0U>() == 2);
+static_assert(readout::ROPID{0,1,2} .getRelIndex<1U>() == 1);
+static_assert(readout::ROPID{0,1,2} .getRelIndex<2U>() == 0);
+
 // IDs must not be convertible to integers
 static_assert(
   !std::is_convertible

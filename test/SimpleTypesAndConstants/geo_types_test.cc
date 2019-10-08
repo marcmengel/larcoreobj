@@ -35,9 +35,75 @@
 template <typename T>
 auto makeConst(T& var) -> decltype(auto) { return const_cast<T const&>(var); }
 
+template <typename ID>
+constexpr bool assertGeoIDlevel()
+  { return geo::details::geoElementLevel<ID>() == ID::Level; }
+
 //------------------------------------------------------------------------------
 // compile-time tests:
 //
+// consistency check between levels
+static_assert(assertGeoIDlevel<geo::CryostatID>());
+static_assert(assertGeoIDlevel<geo::OpDetID>());
+static_assert(assertGeoIDlevel<geo::TPCID>());
+static_assert(assertGeoIDlevel<geo::PlaneID>());
+static_assert(assertGeoIDlevel<geo::WireID>());
+static_assert( geo::details::isTopGeoElementID<geo::CryostatID>);
+static_assert(!geo::details::isTopGeoElementID<geo::OpDetID>);
+static_assert(!geo::details::isTopGeoElementID<geo::TPCID>);
+static_assert(!geo::details::isTopGeoElementID<geo::PlaneID>);
+static_assert(!geo::details::isTopGeoElementID<geo::WireID>);
+
+static_assert(std::is_same_v<geo::CryostatID::ID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::CryostatID::UpperID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::OpDetID::ID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::OpDetID::ID_t<1U>, geo::OpDetID>);
+static_assert(std::is_same_v<geo::OpDetID::UpperID_t<0U>, geo::OpDetID>);
+static_assert(std::is_same_v<geo::OpDetID::UpperID_t<1U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::TPCID::ID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::TPCID::ID_t<1U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::TPCID::UpperID_t<0U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::TPCID::UpperID_t<1U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::PlaneID::ID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::PlaneID::ID_t<1U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::PlaneID::ID_t<2U>, geo::PlaneID>);
+static_assert(std::is_same_v<geo::PlaneID::UpperID_t<0U>, geo::PlaneID>);
+static_assert(std::is_same_v<geo::PlaneID::UpperID_t<1U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::PlaneID::UpperID_t<2U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::WireID::ID_t<0U>, geo::CryostatID>);
+static_assert(std::is_same_v<geo::WireID::ID_t<1U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::WireID::ID_t<2U>, geo::PlaneID>);
+static_assert(std::is_same_v<geo::WireID::ID_t<3U>, geo::WireID>);
+static_assert(std::is_same_v<geo::WireID::UpperID_t<0U>, geo::WireID>);
+static_assert(std::is_same_v<geo::WireID::UpperID_t<1U>, geo::PlaneID>);
+static_assert(std::is_same_v<geo::WireID::UpperID_t<2U>, geo::TPCID>);
+static_assert(std::is_same_v<geo::WireID::UpperID_t<3U>, geo::CryostatID>);
+
+static_assert(geo::CryostatID{0}  .getIndex   <0U>() == 0);
+static_assert(geo::CryostatID{0}  .getRelIndex<0U>() == 0);
+static_assert(geo::OpDetID{0,1}   .getIndex   <0U>() == 0);
+static_assert(geo::OpDetID{0,1}   .getIndex   <1U>() == 1);
+static_assert(geo::OpDetID{0,1}   .getRelIndex<0U>() == 1);
+static_assert(geo::OpDetID{0,1}   .getRelIndex<1U>() == 0);
+static_assert(geo::TPCID{0,1}     .getIndex   <0U>() == 0);
+static_assert(geo::TPCID{0,1}     .getIndex   <1U>() == 1);
+static_assert(geo::TPCID{0,1}     .getRelIndex<0U>() == 1);
+static_assert(geo::TPCID{0,1}     .getRelIndex<1U>() == 0);
+static_assert(geo::PlaneID{0,1,2} .getIndex   <0U>() == 0);
+static_assert(geo::PlaneID{0,1,2} .getIndex   <1U>() == 1);
+static_assert(geo::PlaneID{0,1,2} .getIndex   <2U>() == 2);
+static_assert(geo::PlaneID{0,1,2} .getRelIndex<0U>() == 2);
+static_assert(geo::PlaneID{0,1,2} .getRelIndex<1U>() == 1);
+static_assert(geo::PlaneID{0,1,2} .getRelIndex<2U>() == 0);
+static_assert(geo::WireID{0,1,2,3}.getIndex   <0U>() == 0);
+static_assert(geo::WireID{0,1,2,3}.getIndex   <1U>() == 1);
+static_assert(geo::WireID{0,1,2,3}.getIndex   <2U>() == 2);
+static_assert(geo::WireID{0,1,2,3}.getIndex   <3U>() == 3);
+static_assert(geo::WireID{0,1,2,3}.getRelIndex<0U>() == 3);
+static_assert(geo::WireID{0,1,2,3}.getRelIndex<1U>() == 2);
+static_assert(geo::WireID{0,1,2,3}.getRelIndex<2U>() == 1);
+static_assert(geo::WireID{0,1,2,3}.getRelIndex<3U>() == 0);
+
 // IDs must not be convertible to integers
 static_assert(
   !std::is_convertible<geo::CryostatID, geo::CryostatID::CryostatID_t>::value,
