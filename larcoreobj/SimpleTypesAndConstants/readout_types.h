@@ -165,13 +165,6 @@ namespace readout {
           return cmp_res;
       } // cmp()
 
-    //@{
-    /// Conversion to TPCsetID (for convenience of notation).
-    constexpr TPCsetID const& asTPCsetID() const { return *this; }
-    TPCsetID& asTPCsetID() { return *this; }
-    constexpr TPCsetID const& asConstTPCsetID() { return *this; }
-    //@}
-
     /// Level of this element.
     static constexpr auto Level = readout::ElementLevel::ReadoutPlane;
     
