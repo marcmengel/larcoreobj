@@ -118,6 +118,7 @@ namespace geo {
     using Level_t = std::size_t;
     
     static constexpr Level_t Cryostat   = 0U;
+    static constexpr Level_t OpDet      = 1U;
     static constexpr Level_t TPC        = 1U;
     static constexpr Level_t Plane      = 2U;
     static constexpr Level_t Wire       = 3U;
@@ -270,6 +271,9 @@ namespace geo {
           return cmp_res;
       } // cmp()
 
+    /// Level of this element.
+    static constexpr auto Level = geo::ElementLevel::OpDet;
+    
     /// Return the value of the invalid optical detector ID as a r-value
     static constexpr OpDetID_t getInvalidID() { return OpDetID::InvalidID; }
 
