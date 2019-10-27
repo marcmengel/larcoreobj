@@ -55,6 +55,14 @@ namespace geo {
         else return getAbsIDindex<Index>(id.parentID());
       }
     
+    template <std::size_t Index, typename ID>
+    auto& getAbsIDindex(ID& id)
+      {
+        static_assert(Index <= ID::Level, "Index not available for this type.");
+        if constexpr (Index == ID::Level) return id.deepestIndex();
+        else return getAbsIDindex<Index>(id.parentID());
+      }
+    
     template <std::size_t UpIndex, typename ID>
     auto getRelIDindex(ID const& id)
       {
@@ -248,6 +256,9 @@ namespace geo {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -329,11 +340,14 @@ namespace geo {
     auto& deepestIndex() { return OpDet; }
     /// Return the parent ID of this one (a cryostat ID).
     constexpr ParentID_t const& parentID() const { return *this; }
-    /// Returns the index level `Index` of this type.
-    ParentID_t& parentID() { return *this; }
     /// Return the parent ID of this one (a cryostat ID).
+    ParentID_t& parentID() { return *this; }
+    /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -417,6 +431,9 @@ namespace geo {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -502,6 +519,9 @@ namespace geo {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -585,6 +605,9 @@ namespace geo {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -847,7 +870,14 @@ constexpr auto geo::CryostatID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // geo::CryostatID::getIndex()
+} // geo::CryostatID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& geo::CryostatID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::CryostatID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto geo::CryostatID::getRelIndex() const {
@@ -863,7 +893,14 @@ constexpr auto geo::OpDetID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // geo::OpDetID::getIndex()
+} // geo::OpDetID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& geo::OpDetID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::OpDetID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto geo::OpDetID::getRelIndex() const {
@@ -879,7 +916,14 @@ constexpr auto geo::TPCID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // geo::TPCID::getIndex()
+} // geo::TPCID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& geo::TPCID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::TPCID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto geo::TPCID::getRelIndex() const {
@@ -895,7 +939,14 @@ constexpr auto geo::PlaneID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // geo::PlaneID::getIndex()
+} // geo::PlaneID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& geo::PlaneID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::PlaneID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto geo::PlaneID::getRelIndex() const {
@@ -911,7 +962,14 @@ constexpr auto geo::WireID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // geo::WireID::getIndex()
+} // geo::WireID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& geo::WireID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // geo::WireID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto geo::WireID::getRelIndex() const {

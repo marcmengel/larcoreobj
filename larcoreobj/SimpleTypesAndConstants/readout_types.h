@@ -33,6 +33,10 @@ namespace readout {
     inline constexpr auto getAbsIDindex(ID const& id)
       { return geo::details::getAbsIDindex<Index, ID>(id); }
     
+    template <std::size_t Index, typename ID>
+    inline auto& getAbsIDindex(ID& id)
+      { return geo::details::getAbsIDindex<Index, ID>(id); }
+    
   } // namespace details
 
 
@@ -117,6 +121,9 @@ namespace readout {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -210,6 +217,9 @@ namespace readout {
     /// Returns the index level `Index` of this type.
     template <std::size_t Index = 0U>
     constexpr auto getIndex() const;
+    /// Returns the index level `Index` of this type.
+    template <std::size_t Index = 0U>
+    auto& writeIndex();
     /// Returns the index `Above` levels higher than `Level`.
     template <std::size_t Above>
     constexpr auto getRelIndex() const;
@@ -317,7 +327,14 @@ constexpr auto readout::TPCsetID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // readout::TPCsetID::getIndex()
+} // readout::TPCsetID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& readout::TPCsetID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // readout::TPCsetID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto readout::TPCsetID::getRelIndex() const {
@@ -333,7 +350,14 @@ constexpr auto readout::ROPID::getIndex() const {
   static_assert
     (Index <= Level, "This ID type does not have the requested Index level.");
   return details::getAbsIDindex<Index>(*this);
-} // readout::ROPID::getIndex()
+} // readout::ROPID::getIndex() const
+
+template <std::size_t Index /* = 0U */>
+auto& readout::ROPID::writeIndex() {
+  static_assert
+    (Index <= Level, "This ID type does not have the requested Index level.");
+  return details::getAbsIDindex<Index>(*this);
+} // readout::ROPID::writeIndex()
 
 template <std::size_t Above>
 constexpr auto readout::ROPID::getRelIndex() const {

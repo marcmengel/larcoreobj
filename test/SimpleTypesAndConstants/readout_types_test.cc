@@ -289,6 +289,15 @@ void test_TPCsetID_directConstructor() {
   TestCompareSmallerID(sid, smaller_cid);
   TestCompareLargerID(sid, larger_cid);
 
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(sid.getIndex<0U>(), 1);
+  sid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(sid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(sid.getIndex<1U>(), 15);
+  sid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(sid.getIndex<1U>(), 19);
+  
   // make sure the ID with TPC set 0 is fine (it's not a bad ID!)
   BOOST_TEST_CHECKPOINT("Testing TPC set ID constructed with a TPC set #0");
 
@@ -399,6 +408,19 @@ void test_ROPID_directConstructor() {
   TestCompareSmallerID(rid, smaller_cid2);
   TestCompareLargerID(rid, larger_cid2);
 
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(rid.getIndex<0U>(), 1);
+  rid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(rid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(rid.getIndex<1U>(), 15);
+  rid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(rid.getIndex<1U>(), 19);
+  
+  BOOST_CHECK_EQUAL(rid.getIndex<2U>(), 32);
+  rid.writeIndex<2U>() = 76;
+  BOOST_CHECK_EQUAL(rid.getIndex<2U>(), 76);
+  
   // make sure the ID with TPC 0 is fine (it's not a bad ID!)
   BOOST_TEST_CHECKPOINT("Testing ROP ID constructed with a ROP #0");
 

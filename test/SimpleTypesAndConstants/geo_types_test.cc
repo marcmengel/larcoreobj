@@ -253,6 +253,11 @@ void test_CryostatID_directConstructor() {
 
   TestIDcomparison(cid, smaller_cid, same_cid, larger_cid);
 
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(cid.getIndex<0U>(), 1);
+  cid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(cid.getIndex<0U>(), 2);
+  
 
   // make sure the ID with cryostat 0 is fine (it's not a bad ID!)
   BOOST_TEST_CHECKPOINT("Testing cryostat ID constructed with an integer 0");
@@ -354,6 +359,15 @@ void test_OpDetID_directConstructor() {
   TestCompareSmallerID(oid, smaller_cid);
   TestCompareLargerID(oid, larger_cid);
 
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(oid.getIndex<0U>(), 1);
+  oid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(oid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(oid.getIndex<1U>(), 15);
+  oid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(oid.getIndex<1U>(), 19);
+  
   // make sure the ID with optical detector 0 is fine (it's not a bad ID!)
   BOOST_TEST_CHECKPOINT
     ("Testing optical detector ID constructed with OpDet #0");
@@ -460,6 +474,16 @@ void test_TPCID_directConstructor() {
   // make sure the ID with TPC 0 is fine (it's not a bad ID!)
   BOOST_TEST_CHECKPOINT("Testing TPC ID constructed with a TPC #0");
 
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(tid.getIndex<0U>(), 1);
+  tid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(tid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(tid.getIndex<1U>(), 15);
+  tid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(tid.getIndex<1U>(), 19);
+  
+  
   geo::TPCID first_tid(0, 0);
   TestIDvalidity(first_tid, true);
   TestSetIDvalidity(first_tid);
@@ -578,8 +602,22 @@ void test_PlaneID_directConstructor() {
   TestCompareSmallerID(pid, smaller_cid2);
   TestCompareLargerID(pid, larger_cid2);
 
-  // make sure the ID with TPC 0 is fine (it's not a bad ID!)
-  BOOST_TEST_CHECKPOINT("Testing Plane ID constructed with a Plane #0");
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(pid.getIndex<0U>(), 1);
+  pid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(pid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(pid.getIndex<1U>(), 15);
+  pid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(pid.getIndex<1U>(), 19);
+  
+  BOOST_CHECK_EQUAL(pid.getIndex<2U>(), 32);
+  pid.writeIndex<2U>() = 76;
+  BOOST_CHECK_EQUAL(pid.getIndex<2U>(), 76);
+  
+  
+  // make sure the ID with plane 0 is fine (it's not a bad ID!)
+  BOOST_TEST_CHECKPOINT("Testing plane ID constructed with a plane #0");
 
   geo::PlaneID first_pid(0, 0, 0);
   TestIDvalidity(first_pid, true);
@@ -711,9 +749,27 @@ void test_WireID_directConstructor() {
   TestCompareSmallerID(wid, smaller_cid2);
   TestCompareLargerID(wid, larger_cid2);
 
-  // make sure the ID with TPC 0 is fine (it's not a bad ID!)
-  BOOST_TEST_CHECKPOINT("Testing Plane ID constructed with a Plane #0");
-
+  // make sure the ID with wire 0 is fine (it's not a bad ID!)
+  BOOST_TEST_CHECKPOINT("Testing wire ID constructed with a wire #0");
+  
+  // test setting and accessing a single index
+  BOOST_CHECK_EQUAL(wid.getIndex<0U>(), 1);
+  wid.writeIndex<0U>() = 2;
+  BOOST_CHECK_EQUAL(wid.getIndex<0U>(), 2);
+  
+  BOOST_CHECK_EQUAL(wid.getIndex<1U>(), 15);
+  wid.writeIndex<1U>() = 19;
+  BOOST_CHECK_EQUAL(wid.getIndex<1U>(), 19);
+  
+  BOOST_CHECK_EQUAL(wid.getIndex<2U>(), 32);
+  wid.writeIndex<2U>() = 76;
+  BOOST_CHECK_EQUAL(wid.getIndex<2U>(), 76);
+  
+  BOOST_CHECK_EQUAL(wid.getIndex<3U>(), 27);
+  wid.writeIndex<3U>() = 45;
+  BOOST_CHECK_EQUAL(wid.getIndex<3U>(), 45);
+  
+  
   geo::WireID first_wid(0, 0, 0, 0);
   TestIDvalidity(first_wid, true);
   TestSetIDvalidity(first_wid);
