@@ -10,4 +10,8 @@ cet_test( geo_types_fhicl_test USE_BOOST_UNIT
   LIBRARIES
     ${FHICLCPP}
   )
+cet_test( readout_types_fhicl_test USE_BOOST_UNIT
+  LIBRARIES
+    ${FHICLCPP}
+  )
 cet_test( testPhysicalConstants )

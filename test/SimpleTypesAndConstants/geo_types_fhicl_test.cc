@@ -1,7 +1,7 @@
 /**
  * @file   geo_types_fhicl_test.cc
  * @brief  Test of `larcoreobj/SimpleTypesAndConstants/geo_types_fhicl.h`.
- * @author Gianluca Petrillo (petrillo@fnal.gov)
+ * @author Gianluca Petrillo (petrillo@slac.stanford.edu)
  * @date   November 25, 2019
  */
 
@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 #include <array>
-#include <type_traits> // is_same_v<>
+#include <type_traits> // std::is_same_v<>
 
 
 //------------------------------------------------------------------------------

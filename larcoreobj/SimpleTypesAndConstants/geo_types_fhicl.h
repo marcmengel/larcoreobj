@@ -386,7 +386,7 @@ namespace geo::fhicl {
   // --- END -- Plane ID -------------------------------------------------------
   
   
-  // --- BEGIN -- Wire ID -----------------------------------------------------
+  // --- BEGIN -- Wire ID ------------------------------------------------------
   /// Configuration structure for validated `geo::PlaneID` parameter.
   template <>
   struct IDConfig<geo::WireID>: public IDConfig<geo::PlaneID> {
@@ -415,10 +415,10 @@ namespace geo::fhicl {
   /// Member type of optional sequence of `geo::WireID` parameters.
   using OptionalWireIDsequence = OptionalIDsequence<geo::WireID>;
   
-  // --- END -- Wire ID -------------------------------------------------------
+  // --- END -- Wire ID --------------------------------------------------------
   
   
-  // --- BEGIN -- ID sequence parsing ------------------------------------------
+  // --- BEGIN -- ID parsing ---------------------------------------------------
   
   //@{
   /**
@@ -718,7 +718,7 @@ namespace geo::fhicl {
   
   //@}
   
-  // --- END -- ID sequence parsing --------------------------------------------
+  // --- END -- ID parsing -----------------------------------------------------
   
   
   /// @}
