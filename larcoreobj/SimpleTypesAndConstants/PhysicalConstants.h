@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \file  larcorealg/SimpleTypesAndConstants/PhysicalConstants.h
+/// \file  larcoreobj/SimpleTypesAndConstants/PhysicalConstants.h
 /// \brief Collection of Physical constants used in LArSoft
 ///
 ///
