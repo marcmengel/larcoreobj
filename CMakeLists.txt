@@ -3,20 +3,14 @@
 #
 #  cd .../path/to/build/directory
 #  source .../path/to/larcoreobj/ups/setup_for_development <-d|-p>
-#  cmake [-DCMAKE_INSTALL_PREFIX=/install/path]
-#        -DCMAKE_BUILD_TYPE=$CETPKG_TYPE
-#        $CETPKG_SOURCE
-#  make
-#  make test
-#  make install
-#  make package (builds distribution tarfile)
+#  buildtool [-I /install/path] -bt[i] -jN
 # ======================================================================
 
 
-# use cmake 3.3 or later
-cmake_minimum_required (VERSION 3.3)
+# use cmake 3.14 or later
+cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
 
-project(larcoreobj)
+project(larcoreobj LANGUAGES CXX)
 
 # cetbuildtools contains our cmake modules
 SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
@@ -42,7 +36,7 @@ cet_report_compiler_flags()
 # these are minimum required versions, not the actual product versions
 find_ups_product( canvas )
 find_ups_product( cetbuildtools )
-find_ups_root( )
+find_ups_root()
 
 # macros for artdaq_dictionary and simple_plugin
 include(ArtDictionary)
@@ -52,7 +46,7 @@ include(BasicPlugin)
 # source
 add_subdirectory(larcoreobj)
 
-# tests 
+# tests
 add_subdirectory(test)
 
 # ups - table and config files
