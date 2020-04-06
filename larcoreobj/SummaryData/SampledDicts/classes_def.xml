@@ -1,0 +1,13 @@
+<lcgdict>
+
+  <class name="std::map<art::SubRunID,sumdata::POTSummary>"/>
+  <class name="std::map<std::string,std::map<art::SubRunID,sumdata::POTSummary>>"/>
+  <class name="art::Sampled<sumdata::POTSummary>"/>
+  <class name="art::Wrapper<art::Sampled<sumdata::POTSummary>>"/>
+
+  <class name="std::map<art::SubRunID,sumdata::RunData>"/>
+  <class name="std::map<std::string,std::map<art::SubRunID,sumdata::RunData>>"/>
+  <class name="art::Sampled<sumdata::RunData>"/>
+  <class name="art::Wrapper<art::Sampled<sumdata::RunData>>"/>
+
+</lcgdict>
