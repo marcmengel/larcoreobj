@@ -10,7 +10,8 @@ namespace raw{
     kHuffman,    ///< Huffman Encoding
     kZeroSuppression,  ///< Zero Suppression algorithm
     kZeroHuffman,  ///< Zero Suppression followed by Huffman Encoding
-    kDynamicDec  ///< Dynamic decimation
+    kDynamicDec,  ///< Dynamic decimation
+    kFibonacci  ///< Fibonacci encoding
   } Compress_t;
 
   typedef enum _auxdettype {
