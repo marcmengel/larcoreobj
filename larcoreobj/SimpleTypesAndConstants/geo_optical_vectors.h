@@ -57,10 +57,10 @@ namespace geo {
 
   /// Type of optical 3D displacement vector with representation in
   /// double precision.
-  using OpticalVector3D_t = OpticalVector3DBase_t<double>;
+  using OpticalVector_t = OpticalVector3DBase_t<double>;
   
   /// Type of optical 3D point with representation in double precision.
-  using OpticalPoint3D_t = OpticalPoint3DBase_t<double>;
+  using OpticalPoint_t = OpticalPoint3DBase_t<double>;
 
 
   /// @}
