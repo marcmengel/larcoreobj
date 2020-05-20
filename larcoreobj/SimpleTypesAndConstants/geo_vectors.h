@@ -6,7 +6,7 @@
  * @ingroup Geometry
  *
  * This library depends on ROOT GenVector.
- * In the CET link list in `CMakeLists.txt`, link to `${ROOT::GenVector}`.
+ * In the CET link list in `CMakeLists.txt`, link to `ROOT::GenVector`.
  *
  * Additional utilities are available from `geo_vectors_utils.h`.
  */
