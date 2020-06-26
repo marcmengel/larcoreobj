@@ -3,21 +3,25 @@
  * @file   larcoreobj/SimpleTypesAndConstants/geo_types.h
  * @brief  Definition of data types for geometry description.
  * @author Brian Rebel (brebel@fnal.gov)
+ * @see    larcoreobj/SimpleTypesAndConstants/geo_types.cxx
  * @ingroup Geometry
  *
- * This library is currently header-only and depends only on standard C++.
+ * This library depends only on standard C++.
  *
  */
 
 #ifndef LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_TYPES_H
 #define LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_TYPES_H
 
+
+// C++ standard libraries
 #include <climits>
 #include <cmath>
 #include <string>
 #include <sstream>
 #include <iosfwd> // std::ostream
 #include <limits> // std::numeric_limits<>
+
 
 namespace geo {
   namespace details {
@@ -808,12 +812,20 @@ namespace geo {
     }
   };
 
+  
+  //----------------------------------------------------------------------------
+  /// Returns the name of the specified signal type.
+  std::string SignalTypeName(geo::SigType_t sigType);
+  
+  
+  //----------------------------------------------------------------------------
+  
+
 } // namespace geo
 /// @}
 // END Geometry ----------------------------------------------------------------
 
 
-//------------------------------------------------------------------------------
 namespace geo {
   namespace details {
 
