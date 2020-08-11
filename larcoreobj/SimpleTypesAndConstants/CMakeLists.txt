@@ -1,4 +1,4 @@
-art_dictionary() # no DICTIONARY_LIBRARIES needed so far
+cet_make()
 
 install_headers()
 install_source()
