@@ -2,3 +2,4 @@
 
 #include "larcoreobj/SummaryData/RunData.h"
 #include "larcoreobj/SummaryData/POTSummary.h"
+#include "larcoreobj/SummaryData/GeometryConfigurationInfo.h"
