@@ -19,33 +19,31 @@ std::ostream& sumdata::operator<<
   (std::ostream& out, sumdata::GeometryConfigurationInfo const& info)
 {
   
-  if (info.isDataValid()) {
-    out <<   "Geometry information version: " << info.dataVersion;
-    
-    if (info.dataVersion >= sumdata::GeometryConfigurationInfo::DataVersion_t{1})
-    {
-      out
-        << "\nDetector name:               '" << info.detectorName << "'"
-        ;
-    } // version >= 1
-    
+  if (!info.isDataValid())
+    return out << "Invalid geometry configuration information" << std::endl;
+  
+  out <<   "Geometry information version: " << info.dataVersion;
+  
+  if (info.dataVersion >= sumdata::GeometryConfigurationInfo::DataVersion_t{1})
+  {
+    out
+      << "\nDetector name:               '" << info.detectorName << "'"
+      ;
+  } // version >= 1
+  
+  if (info.dataVersion >= sumdata::GeometryConfigurationInfo::DataVersion_t{2})
+  {
     out
       << "\nFull configuration:"
       << "\n" << std::string(80, '-')
       << "\n" << info.geometryServiceConfiguration
       << "\n" << std::string(80, '-')
       ;
-    
-    if (info.dataVersion > sumdata::GeometryConfigurationInfo::DataVersion_t{1})
-    {
-      out
-        << "\n[this version of code can't fully decode further information]";
-    }
-    
-    out << std::endl;
-  } // if valid
-  else {
-    out << "Invalid geometry configuration information" << std::endl;
+  }
+  
+  if (info.dataVersion > sumdata::GeometryConfigurationInfo::DataVersion_t{2}) {
+    out
+      << "\n[this version of code can't fully decode further information]";
   }
   
   return out;

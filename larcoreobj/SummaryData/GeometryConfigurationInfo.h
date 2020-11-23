@@ -47,10 +47,11 @@ namespace sumdata {
  * Versions
  * =========
  * 
- * 1. includes
+ * 1. legacy version; includes
  *     * the version (`1`)
- *     * the configuration of `geo::Geometry` service as a FHiCL string
  *     * detector name (`geo::Geometry::DetectorName()`)
+ * 2. includes version 1 information and:
+ *     * the configuration of `geo::Geometry` service as a FHiCL string
  * 
  * 
  */
