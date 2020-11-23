@@ -73,7 +73,7 @@ struct sumdata::GeometryConfigurationInfo {
   
   
   /// Protocol: whether the data content is valid.
-  bool isDataValid() const { return dataVersion != InvalidDataVersion; }
+  bool isDataValid() const noexcept { return dataVersion != InvalidDataVersion; }
   
 }; // sumdata::GeometryConfigurationInfo
 
