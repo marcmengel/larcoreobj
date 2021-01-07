@@ -17,7 +17,7 @@
 
 // -----------------------------------------------------------------------------
 namespace sumdata {
-  class GeometryConfigurationInfo;
+  struct GeometryConfigurationInfo;
   std::ostream& operator<< (std::ostream&, GeometryConfigurationInfo const&);
 } // namespace sumdata
 
