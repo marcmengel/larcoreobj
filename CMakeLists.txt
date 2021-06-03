@@ -8,12 +8,12 @@
 
 cmake_minimum_required (VERSION 3.12...3.18 FATAL_ERROR)
 
-project(larcoreobj LANGUAGES CXX)
+project(larcoreobj VERSION 9.24.01.01 LANGUAGES CXX)
 
-# cetbuildtools contains our cmake modules
-find_package(cetbuildtools REQUIRED)
+find_package(cetmodules REQUIRED)
 
-list(APPEND CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules)
+find_package(canvas_root_io)
+find_package(art)
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -26,9 +26,6 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 
 cet_report_compiler_flags()
 
-# these are minimum required versions, not the actual product versions
-find_ups_product( canvas )
-find_ups_root()
 
 # macros for artdaq_dictionary and simple_plugin
 include(ArtDictionary)
@@ -41,8 +38,9 @@ add_subdirectory(larcoreobj)
 # tests
 add_subdirectory(test)
 
-# ups - table and config files
-add_subdirectory(ups)
 
-# packaging utility
-include(UseCPack)
+if($ENV{CETMODULES_FQ_DIR})
+add_subdirectory(ups)
+endif()
+
+add_subdirectory(cmakeConfig)
