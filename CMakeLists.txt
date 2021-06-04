@@ -15,6 +15,11 @@ find_package(cetmodules REQUIRED)
 find_package(canvas_root_io)
 find_package(art)
 
+find_package(fhiclcpp)
+# This should be added to specific targets, but for now...
+link_libraries(fhiclcpp::fhiclcpp)
+link_libraries(fhiclcpp::types)
+
 include(CetCMakeEnv)
 cet_cmake_env()
 
@@ -25,7 +30,6 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 )
 
 cet_report_compiler_flags()
-
 
 # macros for artdaq_dictionary and simple_plugin
 include(ArtDictionary)
